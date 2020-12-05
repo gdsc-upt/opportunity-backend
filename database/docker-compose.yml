@@ -1,0 +1,37 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  pdb:
+    image: kartoza/postgis:11.5-2.8
+    container_name: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: toor
+      POSTGRES_USER: root
+    volumes:
+      - ./postgress-data:/var/lib/postgresql
+    networks:
+      postgresdb:
+        aliases:
+          - pdb
+
+  pga:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - 8085:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    networks:
+      postgresdb:
+
+networks:
+  postgresdb:
+    external:
+      name: pdb
