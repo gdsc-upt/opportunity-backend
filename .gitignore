@@ -354,4 +354,4 @@ dmypy.json
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all,vscode,python,node
 
 config.yml
-database/postgres-data/
+database/postgress-data/
