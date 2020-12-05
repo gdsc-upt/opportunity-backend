@@ -4,6 +4,7 @@ IF NOT EXIST venv (
     echo Python system interpreter:
     where python
     python --version || goto :error
+    pip install pyyaml
     echo Checking variables configuration
     python src/check_config_vars.py || goto :error
     echo Creating new virtualenv...
