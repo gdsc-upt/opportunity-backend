@@ -16,3 +16,10 @@ class ExampleModel(Model):
     email = models.EmailField()
     date = models.DateField(null=True)
     age = models.IntegerField()
+
+class Partner(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField()
+    website = models.URLField(blank=True, default= None)
+    logo = models.ImageField(blank=True, default=None)
+    isPublished
