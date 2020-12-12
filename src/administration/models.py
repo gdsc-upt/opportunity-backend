@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import EmailField
+from django.db.models import EmailField, Model, IntegerField, DateField, CharField
 from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 
 class User(AbstractUser):
@@ -8,3 +9,10 @@ class User(AbstractUser):
 
     class Meta:
         db_table = 'auth_user'
+
+
+class ExampleModel(Model):
+    name = models.CharField(max_length=30)
+    email = models.EmailField()
+    date = models.DateField(null=True)
+    age = models.IntegerField()
