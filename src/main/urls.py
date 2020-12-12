@@ -20,7 +20,9 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rest_framework import permissions
+from rest_framework import permissions, routers
+
+from administration.views import ExampleModelViewSet
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -35,11 +37,16 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+router = routers.SimpleRouter()
+router.register('ExampleModel', ExampleModelViewSet)
+
 urlpatterns = [
     path('', RedirectView.as_view(url='/api/admin/')),
     path('api/admin/', admin.site.urls),
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
 ]
+
+urlpatterns += router.urls
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
