@@ -1,0 +1,2 @@
+All custom html files should be saved here with respect to this one rule:
+    - make a directory named after the app that uses the template and save your file related to that app

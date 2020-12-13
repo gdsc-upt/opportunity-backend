@@ -1,0 +1,5 @@
+All the images that users will upload using Admin or API will be saved here.
+
+THIS is the only file that should be pushed to git repository.
+
+DO NOT push other folders/files/images that are saved here.
