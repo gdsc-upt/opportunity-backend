@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import ExampleModel, Partner
+from administration.models import ExampleModel, Partner
 
 
 class ExampleModelSerializer(serializers.ModelSerializer):

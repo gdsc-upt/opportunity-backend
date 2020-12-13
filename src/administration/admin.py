@@ -1,5 +1,5 @@
-from django.contrib import admin
 from django.contrib.admin import register
+from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User, ExampleModel, Partner
 
@@ -11,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
 
 @register(ExampleModel)
 class ExampleModelAdmin(admin.ModelAdmin):
-    exclude = ('date',)
+    list_display = ('name', 'email', 'age')
 
 
 @register(Partner)
