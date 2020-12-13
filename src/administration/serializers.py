@@ -1,8 +1,15 @@
 from rest_framework import serializers
 
-from .models import ExampleModel
+from .models import ExampleModel, Partner
+
 
 class ExampleModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model =  ExampleModel
-        fields = ('name','email','date','age')
+        model = ExampleModel
+        fields = ('name', 'email', 'date', 'age')
+
+
+class PartnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Partner
+        fields = '__all__'

@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
-# Create your views here.
+from administration.models import Partner
+from administration.serializers import PartnerSerializer
+
+
+class PartnerViewSet(ReadOnlyModelViewSet):
+    serializer_class = PartnerSerializer
+    queryset = Partner.objects.all()

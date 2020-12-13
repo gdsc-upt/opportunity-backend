@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import EmailField, Model
+from django.db.models import EmailField, Model, DateTimeField, BooleanField, ImageField, URLField, SlugField, CharField
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
@@ -11,8 +11,21 @@ class User(AbstractUser):
         db_table = 'auth_user'
 
 
-class ExampleModel(Model):
+class ExampleModel(models.Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
     date = models.DateField(null=True)
     age = models.IntegerField()
+
+
+class Partner(Model):
+    name = CharField(max_length=100)
+    slug = SlugField()
+    website = URLField(blank=True, default=None)
+    logo = ImageField(blank=True, default=None)
+    is_published = BooleanField()
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
