@@ -18,14 +18,12 @@ class ExampleModel(Model):
     age = models.IntegerField()
 
 
-class Partner(models.Model):
-    name = models.CharField(max_length=100)
+class MenuItem(models.Model):
+    name = models.CharField(max_length=30)
     slug = models.SlugField()
-    website = models.URLField(blank=True, default=None)
-    logo = models.ImageField(blank=True, default=None)
-    is_published = models.BooleanField()
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    link = models.URLField()
+    image = models.ImageField(blank=True, default=None)
+    parent = models.CharField(max_length=30, blank=True, default=None)
 
     def __str__(self):
         return self.name

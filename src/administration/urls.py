@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from administration.views import PartnerViewSet
+from administration.views import MenuItemViewSet
 
 router = DefaultRouter()
-router.register('partners', PartnerViewSet)
+router.register('menuItems', MenuItemViewSet)

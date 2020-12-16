@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import ExampleModel, Partner
+from .models import ExampleModel, MenuItem
 
 
 class ExampleModelSerializer(serializers.ModelSerializer):
@@ -9,7 +9,7 @@ class ExampleModelSerializer(serializers.ModelSerializer):
         fields = ('name', 'email', 'date', 'age')
 
 
-class PartnerSerializer(serializers.ModelSerializer):
+class MenuItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Partner
+        model = MenuItem
         fields = '__all__'

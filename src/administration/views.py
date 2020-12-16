@@ -4,10 +4,10 @@ from django.shortcuts import render
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
-from administration.models import Partner
-from administration.serializers import PartnerSerializer
+from administration.models import MenuItem
+from administration.serializers import MenuItemSerializer
 
 
-class PartnerViewSet(ReadOnlyModelViewSet):
-    serializer_class = PartnerSerializer
-    queryset = Partner.objects.all()
+class MenuItemViewSet(ReadOnlyModelViewSet):
+    serializer_class = MenuItemSerializer
+    queryset = MenuItem.objects.all()
