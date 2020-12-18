@@ -25,11 +25,11 @@ jobs:
 #        repository: dsc-upt/opportunity-backend/opportunity-backend
 #        tag_with_sha: true
         secrets: |
-          GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTH_TOKEN=${{ github.token }}
         push: true
         tags: |
-          $GITHUB_REPOSITORY/opportunity-backend:latest
-          $GITHUB_REPOSITORY/opportunity-backend:$GITHUB_SHA
+          ${{ github.repository }}/opportunity-backend:latest
+          ${{ github.repository }}/opportunity-backend:${{ github.sha }}
 
 #   deploy:
 #     runs-on: ubuntu-latest
