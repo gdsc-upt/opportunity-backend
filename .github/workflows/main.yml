@@ -31,8 +31,7 @@ jobs:
 #        registry: docker.pkg.github.com
 #        repository: dsc-upt/opportunity-backend/opportunity-backend
 #        tag_with_sha: true
-#        secrets: |
-#          GIT_AUTH_TOKEN=${{ github.token }}
+        secrets: GIT_AUTH_TOKEN=${{ github.token }}
         push: true
         tags: dsc-upt/opportunity-backend/backend:latest
 #          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:${{ github.sha }}
