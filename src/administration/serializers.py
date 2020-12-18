@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
-from .models import ExampleModel
+from administration.models import Faq
 
-class ExampleModelSerializer(serializers.ModelSerializer):
+
+class FaqSerializer(serializers.ModelSerializer):
     class Meta:
-        model =  ExampleModel
-        fields = ('name','email','date','age')
+        fields = 'id', 'question', 'answer'
+        model = Faq

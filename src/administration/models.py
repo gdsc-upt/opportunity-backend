@@ -17,9 +17,13 @@ class ExampleModel(Model):
     date = models.DateField(null=True)
     age = models.IntegerField()
 
-class Partner(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField()
-    website = models.URLField(blank=True, default= None)
-    logo = models.ImageField(blank=True, default=None)
-    isPublished
+
+class Faq(models.Model):
+    question = models.CharField(max_length=300)
+    answer = models.TextField(max_length=1000)
+    is_published = models.BooleanField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.question

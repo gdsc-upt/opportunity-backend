@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
-# Create your views here.
+from administration.models import Faq
+from administration.serializers import FaqSerializer
+
+
+class FaqViewSet(ReadOnlyModelViewSet):
+    serializer_class = FaqSerializer
+    queryset = Faq.objects.filter(is_published=True)
