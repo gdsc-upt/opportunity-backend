@@ -1,8 +1,12 @@
 from .base import *
 
-DEBUG = False
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MIDDLEWARE.insert(0, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 SILENCED_SYSTEM_CHECKS = [
     'security.W004',  # SECURE_HSTS_SECONDS

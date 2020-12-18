@@ -4,4 +4,5 @@ psycopg2>=2.8.6
 djangorestframework~=3.12.2
 django-rest-swagger
 drf_yasg
-Pillow
+Pillow~=8.0.1
+django-cors-headers>=3.5.0

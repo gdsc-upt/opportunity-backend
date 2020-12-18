@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+from corsheaders.defaults import default_methods, default_headers
 from django.contrib.admin import AdminSite
 
 from utils import Config
@@ -129,3 +130,13 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+#######################################
+# CORS CONFIGS
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:4200',
+    'https://opportunity.timis.tech',
+    'https://dev.opportunity.timis.tech',
+)
+CORS_ALLOW_METHODS = default_methods
+CORS_ALLOW_HEADERS = default_headers

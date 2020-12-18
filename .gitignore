@@ -6,6 +6,7 @@
 src/media/*
 !/*/.gitkeep
 !/src/*/.gitkeep
+media-local
 
 ### Node ###
 # Logs

@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  opportunity-backend:
+    build: .
+    container_name: opportunity-backend
+    volumes:
+      - ./media-local:/usr/app/media
+      - ./config.yml:/usr/config.yml
+    ports:
+      - "8000:8000"
+    networks:
+      postgresdb:
+        aliases:
+          - backend
+      web:
+        aliases:
+          - backend
+
+networks:
+  web:
+    external: true
+  postgresdb:
+    external:
+      name: pdb
