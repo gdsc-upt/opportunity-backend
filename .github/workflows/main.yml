@@ -16,7 +16,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: dsc-upt/opportunity-frontend/opportunity-backend
+        repository: dsc-upt/opportunity-backend/opportunity-backend
         tag_with_sha: true
         tags: latest
   
