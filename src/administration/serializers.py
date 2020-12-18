@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from administration.models import ExampleModel, Partner, Faq
-from .models import News
+from administration.models import ExampleModel, Partner, Faq, Article
 
 
 class ExampleModelSerializer(serializers.ModelSerializer):
@@ -22,7 +21,7 @@ class PartnerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class NewsSerializer(serializers.ModelSerializer):
+class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = News
+        model = Article
         fields = '__all__'

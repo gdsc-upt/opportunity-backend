@@ -11,14 +11,14 @@ class User(AbstractUser):
         db_table = 'auth_user'
 
 
-class ExampleModel(models.Model):
+class ExampleModel(Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
     date = models.DateField(null=True)
     age = models.IntegerField()
 
 
-class Partner(Model):
+class Partner(models.Model):
     name = CharField(max_length=100)
     slug = SlugField()
     website = URLField(blank=True, default=None)
@@ -42,14 +42,14 @@ class Faq(models.Model):
         return self.question
 
 
-class News(models.Model):
-    name = models.CharField(max_length=100)
+class Article(models.Model):
+    title = models.CharField(max_length=100)
     slug = models.SlugField()
-    website = models.URLField(blank=True, default=None)
     image = models.ImageField(blank=True, default=None)
+    description = models.CharField(max_length=2000)
     is_published = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.title
