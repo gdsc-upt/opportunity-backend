@@ -36,7 +36,7 @@ jobs:
         push: true
         tags: |
           docker.pkg.github.com/dsc-upt/opportunity-backend/backend:latest
-          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:${{ github.sha }}
+#          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:${{ github.sha }}
 
 #   deploy:
 #     runs-on: ubuntu-latest
