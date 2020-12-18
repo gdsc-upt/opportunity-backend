@@ -28,8 +28,8 @@ jobs:
           GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
         push: true
         tags: |
-          user/opportunity-backend:latest
-          user/opportunity-backend:sha
+          ${{ GITHUB_REPOSITORY }}/opportunity-backend:latest
+          ${{ GITHUB_REPOSITORY }}/opportunity-backend:${{ GITHUB_SHA }}
 
 #   deploy:
 #     runs-on: ubuntu-latest
