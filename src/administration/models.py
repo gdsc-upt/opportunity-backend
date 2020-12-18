@@ -29,3 +29,14 @@ class Partner(Model):
 
     def __str__(self):
         return self.name
+
+
+class Faq(models.Model):
+    question = models.CharField(max_length=300)
+    answer = models.TextField(max_length=1000)
+    is_published = models.BooleanField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.question

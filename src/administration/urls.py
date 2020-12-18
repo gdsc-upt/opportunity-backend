@@ -1,7 +1,8 @@
 from rest_framework.routers import DefaultRouter
 
-from administration.views import PartnerViewSet, ExampleModelViewSet
+from administration.views import PartnerViewSet, ExampleModelViewSet, FaqViewSet
 
 router = DefaultRouter()
 router.register('partners', PartnerViewSet)
 router.register('example-model', ExampleModelViewSet)
+router.register('faqs', FaqViewSet)
