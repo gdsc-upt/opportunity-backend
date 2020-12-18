@@ -40,3 +40,16 @@ class Faq(models.Model):
 
     def __str__(self):
         return self.question
+
+
+class News(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField()
+    website = models.URLField(blank=True, default=None)
+    image = models.ImageField(blank=True, default=None)
+    is_published = models.BooleanField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
