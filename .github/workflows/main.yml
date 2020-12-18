@@ -34,8 +34,7 @@ jobs:
 #        secrets: |
 #          GIT_AUTH_TOKEN=${{ github.token }}
         push: true
-        tags: |
-          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:latest
+        tags: dsc-upt/opportunity-backend/backend:latest
 #          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:${{ github.sha }}
 
 #   deploy:
