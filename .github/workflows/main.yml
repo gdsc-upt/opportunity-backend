@@ -1,0 +1,32 @@
+name: OpportUNITY Website Backend
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build and push to GitHub Packages
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: dsc-upt/opportunity-frontend/opportunity-backend
+        tag_with_sha: true
+        tags: latest
+  
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Pull & run image on server
+#       uses: appleboy/ssh-action@master
+#       with:
+#         host: timis.tech
+#         USERNAME: ${{ secrets.USERNAME }}
+#         KEY: ${{ secrets.SSHKEY }}
+#         script: sudo /opt/deploy/_deploy.sh /home/docker/opportunity-backend
