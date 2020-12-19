@@ -26,15 +26,11 @@ jobs:
     - name: Build and push to GitHub Packages
       uses: docker/build-push-action@v2
       with:
-#        username: ${{ github.actor }}
-#        password: ${{ secrets.GITHUB_TOKEN }}
-#        registry: docker.pkg.github.com
-#        repository: dsc-upt/opportunity-backend/opportunity-backend
-#        tag_with_sha: true
         secrets: GIT_AUTH_TOKEN=${{ secrets.PAT }}
         push: true
-        tags: ghcr.io/dsc-upt/opportunity-backend/backend:latest
-#          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:${{ github.sha }}
+        tags: |
+          ghcr.io/dsc-upt/opportunity-backend:latest
+          ghcr.io/dsc-upt/opportunity-backend:${{ github.sha }}
 
 #   deploy:
 #     runs-on: ubuntu-latest
