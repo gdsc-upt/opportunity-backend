@@ -1,7 +1,7 @@
 from django.contrib.admin import register
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, ExampleModel, Partner, Faq
+from administration.models import User, ExampleModel, Organization, Partner, Faq
 
 
 @register(User)
@@ -28,3 +28,9 @@ class FaqAdmin(admin.ModelAdmin):
     list_filter = ('is_published', 'created', 'updated')
     search_fields = ('question', 'answer')
     list_editable = ('is_published',)
+
+
+@register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
