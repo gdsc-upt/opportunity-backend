@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from administration.models import ExampleModel, Partner, Faq, Organization
+from administration.models import ExampleModel, Partner, Faq, Organisation
 
 
 class ExampleModelSerializer(serializers.ModelSerializer):
@@ -23,6 +23,6 @@ class PartnerSerializer(serializers.ModelSerializer):
 
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Organization
+        model = Organisation
         fields = '__all__'
 
