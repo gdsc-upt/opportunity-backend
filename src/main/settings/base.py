@@ -31,12 +31,12 @@ DEBUG = config.get('DEBUG', False, cast=bool)
 ALLOWED_HOSTS = config.get('ALLOWED_HOSTS', cast=list)
 
 INSTALLED_APPS = [
+    'administration.apps.CustomAdminConfig',
     'administration',
     'rest_framework_swagger',
     'rest_framework',
     'drf_yasg',
 
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
