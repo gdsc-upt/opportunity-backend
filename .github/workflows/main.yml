@@ -32,13 +32,13 @@ jobs:
           ghcr.io/dsc-upt/opportunity-backend:latest
 #          ghcr.io/dsc-upt/opportunity-backend:${{ github.sha }}
 
-   deploy:
-     runs-on: ubuntu-latest
-     steps:
-     - name: Pull & run image on server
-       uses: appleboy/ssh-action@master
-       with:
-         host: timis.tech
-         USERNAME: ${{ secrets.USERNAME }}
-         KEY: ${{ secrets.SSH_KEY }}
-         script: sudo /opt/deploy/_deploy.sh /home/docker/opportunity-backend
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pull & run image on server
+      uses: appleboy/ssh-action@master
+      with:
+        host: timis.tech
+        USERNAME: ${{ secrets.USERNAME }}
+        KEY: ${{ secrets.SSH_KEY }}
+        script: sudo /opt/deploy/_deploy.sh /home/docker/opportunity-backend
