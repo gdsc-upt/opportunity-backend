@@ -63,3 +63,11 @@ class OpportunityAdmin(admin.ModelAdmin):
                            url=obj.organisation_id, name=obj.organisation.name)
 
     show_org_url.short_description = "organisation"
+
+
+@register(Newsletter)
+class NewsletterAdmin(admin.ModelAdmin):
+    list_display = ('email', 'slug', 'opportunity_categories', 'other', 'created', 'updated')
+    list_filter = ('created', 'updated')
+    search_fields = ('email',)
+    prepopulated_fields = {'slug': ('email', )}

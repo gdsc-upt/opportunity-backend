@@ -85,3 +85,18 @@ class Opportunity(models.Model):
     class Meta:
         verbose_name = "opportunity"
         verbose_name_plural = "opportunities"
+
+
+class Newsletter(models.Model):
+    email = models.CharField(max_length=50)
+    slug = models.SlugField()
+    opportunity_categories = models.ManyToManyField(OpportunityCategory)
+    other = models.CharField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['email']
+
+    def __str__(self):
+        return self.email
