@@ -42,7 +42,7 @@ class Faq(models.Model):
         return self.question
 
 
-class Organization(models.Model):
+class Organisation(models.Model):
     name = models.CharField(max_length=20)
     slug = models.SlugField(blank=True)
     website = models.URLField(blank=True, default=None)
@@ -54,3 +54,21 @@ class Organization(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Opportunity(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField()
+    url = models.URLField(blank=True, default=None)
+    description = models.TextField(max_length=300)
+    deadline = models.DateTimeField()
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "opportunity"
+        verbose_name_plural = "opportunities"

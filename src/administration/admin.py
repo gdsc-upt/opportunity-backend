@@ -1,7 +1,9 @@
 from django.contrib.admin import register
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from administration.models import User, ExampleModel, Organization, Partner, Faq
+from django.utils.html import format_html
+
+from administration.models import User, ExampleModel, Organisation, Partner, Faq, Opportunity
 
 
 @register(User)
@@ -30,7 +32,26 @@ class FaqAdmin(admin.ModelAdmin):
     list_editable = ('is_published',)
 
 
-@register(Organization)
-class OrganizationAdmin(admin.ModelAdmin):
+@register(Organisation)
+class OrganisationAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     prepopulated_fields = {'slug': ('name',)}
+
+
+@register(Opportunity)
+class OpportunityAdmin(admin.ModelAdmin):
+    list_display = ('name', 'show_org_url', 'deadline', 'show_opp_url', 'description')
+    list_filter = ('deadline', 'organisation')
+    search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
+
+    def show_opp_url(self, obj):
+        return format_html("<a href='{url}'>{url}</a>", url=obj.url)
+
+    show_opp_url.short_description = "url"
+
+    def show_org_url(self, obj):
+        return format_html("<a href='/api/admin/administration/organisation/{url}/change/'>{name}</a>",
+                           url=obj.organisation_id, name=obj.organisation.name)
+
+    show_org_url.short_description = "organisation"
