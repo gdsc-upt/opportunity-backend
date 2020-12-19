@@ -72,3 +72,14 @@ class Opportunity(models.Model):
     class Meta:
         verbose_name = "opportunity"
         verbose_name_plural = "opportunities"
+
+
+class MenuItem(models.Model):
+    name = models.CharField(max_length=30)
+    slug = models.SlugField()
+    link = models.URLField()
+    image = models.ImageField(blank=True, default=None)
+    parent = models.CharField(max_length=30, blank=True, default=None)
+
+    def __str__(self):
+        return self.name

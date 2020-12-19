@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
 
-from administration.models import User, ExampleModel, Organisation, Partner, Faq, Opportunity
+from administration.models import User, ExampleModel, Organisation, Partner, Faq, Opportunity, MenuItem
 
 
 @register(User)
@@ -55,3 +55,11 @@ class OpportunityAdmin(admin.ModelAdmin):
                            url=obj.organisation_id, name=obj.organisation.name)
 
     show_org_url.short_description = "organisation"
+
+
+@register(MenuItem)
+class MenuItemAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'link', 'image', 'parent')
+    list_filter = ('parent',)
+    search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
