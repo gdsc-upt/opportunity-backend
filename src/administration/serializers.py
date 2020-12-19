@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from administration.models import ExampleModel, Partner, Faq, Organisation, MenuItem, Article
+from administration.models import ExampleModel, Partner, Faq, Organisation, MenuItem, Article, Newsletter
 
 
 class ExampleModelSerializer(serializers.ModelSerializer):
@@ -36,4 +36,10 @@ class MenuItemSerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
+        fields = '__all__'
+
+
+class NewsletterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Newsletter
         fields = '__all__'
