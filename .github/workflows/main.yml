@@ -2,49 +2,53 @@ name: OpportUNITY Website Backend
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      BRANCH: ${{ steps.extract_branch.outputs.branch }}
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-    - name: Login to GitHub Packages Docker Registry
-      uses: docker/login-action@v1
-      with:
-        registry: docker.pkg.github.com
-        username: ${{ github.actor }}
-        password: ${{ github.token }}
+      - name: Login to GitHub Packages Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
 
-    - name: Build and push to GitHub Packages
-      uses: docker/build-push-action@v2
-      with:
-#        username: ${{ github.actor }}
-#        password: ${{ secrets.GITHUB_TOKEN }}
-#        registry: docker.pkg.github.com
-#        repository: dsc-upt/opportunity-backend/opportunity-backend
-#        tag_with_sha: true
-#        secrets: |
-#          GIT_AUTH_TOKEN=${{ github.token }}
-        push: true
-        tags: |
-          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:latest
-#          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:${{ github.sha }}
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
 
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: Pull & run image on server
-#       uses: appleboy/ssh-action@master
-#       with:
-#         host: timis.tech
-#         USERNAME: ${{ secrets.USERNAME }}
-#         KEY: ${{ secrets.SSHKEY }}
-#         script: sudo /opt/deploy/_deploy.sh /home/docker/opportunity-backend
+      - name: Build and push to GitHub Packages
+        uses: docker/build-push-action@v2
+        env:
+          BRANCH: ${{ steps.extract_branch.outputs.branch }}
+        with:
+          secrets: GIT_AUTH_TOKEN=${{ secrets.CR_PAT }}
+          push: true
+          tags: ghcr.io/dsc-upt/opportunity-backend-${{ env.BRANCH }}:latest
+
+  deploy:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull & run image on server
+        uses: appleboy/ssh-action@master
+        env:
+          BRANCH: ${{ needs.build.outputs.BRANCH }}
+        with:
+          host: timis.tech
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: sudo /opt/deploy/_deploy.sh /home/docker/opportunity-backend-${{ env.BRANCH }}

@@ -53,3 +53,35 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Organisation(models.Model):
+    name = models.CharField(max_length=20)
+    slug = models.SlugField(blank=True)
+    website = models.URLField(blank=True, default=None)
+    description = models.TextField(max_length=300, blank=True)
+    location = models.CharField(max_length=40, blank=True)
+    is_published = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Opportunity(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField()
+    url = models.URLField(blank=True, default=None)
+    description = models.TextField(max_length=300)
+    deadline = models.DateTimeField()
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "opportunity"
+        verbose_name_plural = "opportunities"
