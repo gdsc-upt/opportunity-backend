@@ -33,7 +33,7 @@ jobs:
 #        tag_with_sha: true
         secrets: GIT_AUTH_TOKEN=${{ secrets.PAT }}
         push: true
-        tags: dsc-upt/opportunity-backend/backend:latest
+        tags: ghcr.io/dsc-upt/opportunity-backend/backend:latest
 #          docker.pkg.github.com/dsc-upt/opportunity-backend/backend:${{ github.sha }}
 
 #   deploy:
