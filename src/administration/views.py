@@ -42,13 +42,13 @@ class NewsletterViewSet(ReadOnlyModelViewSet):
     queryset = Newsletter.objects.filter(is_published=True)
 
 
-class WantToHelpViewSet(generics.ListCreateAPIView):
+class WantToHelpViewSet(ReadOnlyModelViewSet):
     queryset = WantToHelp.objects.all()
     serializer_class = WantToHelpSerializer
 
 
 class OpportunityCatViewSet(ReadOnlyModelViewSet):
     serializer_class = OpportunityCatSerializer
-    queryset = OpportunityCategory.objects.filter(is_published=True)
+    queryset = OpportunityCategory.objects.all()
 
     

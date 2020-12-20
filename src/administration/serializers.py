@@ -54,8 +54,6 @@ class WantToHelpSerializer(serializers.ModelSerializer):
 class OpportunityCatSerializer(serializers.ModelSerializer):
     class Meta:
         model=OpportunityCategory
-        fields=['name',
-                'slug',
-                'opportunities']
+        fields='__all__'
 
                 

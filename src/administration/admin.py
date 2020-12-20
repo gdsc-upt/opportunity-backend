@@ -77,6 +77,7 @@ class WantToHelpAdmin(admin.ModelAdmin):
     list_filter = ('name', 'email')
     search_fields = ('email',)
 
+
 class OpportunityCatAdmin(admin.ModelAdmin):
     list_display = ('name','slug', 'opportunities', 'created', 'updated')
     list_filter = ('created', 'updated')

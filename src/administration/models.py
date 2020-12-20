@@ -120,16 +120,11 @@ class WantToHelp(models.Model):
     description=models.TextField()
 
 
-
 class OpportunityCategory(models.Model):
     name=models.CharField(max_length=225)
     slug=models.SlugField()
     opportunities=models.ManyToManyField(Opportunity)
-    created=models.DateTimeField( auto_now_add=True)
-    updated=models.DateTimeField( auto_now=True)
+    created=models.DateTimeField()
+    updated=models.DateTimeField()
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super(OpportunityCategory, self).save(*args, **kwargs)
 
