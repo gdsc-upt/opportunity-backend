@@ -1,9 +1,10 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import viewsets
+from rest_framework import generics
 
-from administration.models import Partner, ExampleModel, Faq, Organisation, MenuItem, Article, Newsletter
+from administration.models import Partner, ExampleModel, Faq, Organisation, MenuItem, Article, Newsletter,WantToHelp,OpportunityCategory
 from administration.serializers import PartnerSerializer, ExampleModelSerializer, FaqSerializer, OrganizationSerializer, MenuItemSerializer, \
-    ArticleSerializer, NewsletterSerializer
+    ArticleSerializer, NewsletterSerializer,WantToHelpSerializer,OpportunityCatSerializer
 
 
 class ExampleModelViewSet(viewsets.ModelViewSet):
@@ -39,3 +40,15 @@ class ArticleViewSet(ReadOnlyModelViewSet):
 class NewsletterViewSet(ReadOnlyModelViewSet):
     serializer_class = NewsletterSerializer
     queryset = Newsletter.objects.filter(is_published=True)
+
+
+class WantToHelpViewSet(ReadOnlyModelViewSet):
+    queryset = WantToHelp.objects.all()
+    serializer_class = WantToHelpSerializer
+
+
+class OpportunityCatViewSet(ReadOnlyModelViewSet):
+    serializer_class = OpportunityCatSerializer
+    queryset = OpportunityCategory.objects.all()
+
+    
