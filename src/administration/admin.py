@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, GroupAdmin
 from django.contrib.auth.models import Group
 from django.utils.html import format_html
 
-from administration.models import User, ExampleModel, Organisation, Partner, Faq, Opportunity, MenuItem, Article, Newsletter,WantToHelp
+from administration.models import User, ExampleModel, Organisation, Partner, Faq, Opportunity, MenuItem, Article, Newsletter,WantToHelp,OpportunityCategory
 from administration.admin_site import admin_site
 
 
@@ -77,6 +77,12 @@ class WantToHelpAdmin(admin.ModelAdmin):
     list_filter = ('name', 'email')
     search_fields = ('email',)
 
+class OpportunityCatAdmin(admin.ModelAdmin):
+    list_display = ('name','slug', 'opportunities', 'created', 'updated')
+    list_filter = ('created', 'updated')
+    search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
+
 
 admin_site.register(ExampleModel, ExampleModelAdmin)
 admin_site.register(User, UserAdmin)
@@ -89,3 +95,5 @@ admin_site.register(MenuItem, MenuItemAdmin)
 admin_site.register(Article, ArticleAdmin)
 admin_site.register(Newsletter, NewsletterAdmin)
 admin_site.register(WantToHelp, WantToHelpAdmin)
+admin_site.register(OpportunityCategory, OpportunityCatAdmin)
+

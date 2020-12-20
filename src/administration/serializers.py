@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from administration.models import ExampleModel, Partner, Faq, Organisation, MenuItem, Article, Newsletter,WantToHelp
+from administration.models import ExampleModel, Partner, Faq, Organisation, MenuItem, Article, Newsletter,WantToHelp,OpportunityCategory
 
 
 class ExampleModelSerializer(serializers.ModelSerializer):
@@ -49,3 +49,13 @@ class WantToHelpSerializer(serializers.ModelSerializer):
     class Meta:
         model=WantToHelp
         fieldss='__all__'
+
+
+class OpportunityCatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=OpportunityCategory
+        fields=['name',
+                'slug',
+                'opportunities']
+
+                
