@@ -10,7 +10,15 @@ from common.admin_site import admin_site
 
 @register(User, site=admin_site)
 class UserAdmin(BaseUserAdmin):
-    pass
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+
+
+@register(UserProfile, site=admin_site)
+class UserProfileAdmin(ModelAdmin):
+    list_display = ('user', 'organisation', 'description')
+    list_filter = ('organisation',)
+    search_fields = ('user', 'organization')
+    autocomplete_fields = ('user', 'organisation')
 
 
 @register(Group, site=admin_site)
@@ -52,10 +60,3 @@ class OpportunityCategoryAdmin(BaseModelAdmin, SlugableModelAdmin):
     list_display = ('name', 'slug', 'created', 'updated')
     list_filter = ('created', 'updated')
     search_fields = ('name',)
-
-
-@register(UserProfile, site=admin_site)
-class UserProfileAdmin(ModelAdmin):
-    list_display = ('user', 'organisation', 'description')
-    list_filter = ('organisation',)
-    search_fields = ('user', 'organization')

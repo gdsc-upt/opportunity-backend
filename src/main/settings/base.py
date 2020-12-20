@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'pwa',
+    'corsheaders',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -143,3 +145,9 @@ CORS_ORIGIN_WHITELIST = (
 )
 CORS_ALLOW_METHODS = default_methods
 CORS_ALLOW_HEADERS = default_headers
+
+
+#######################################
+# THUMBNAIL CONFIGS
+ADMIN_THUMBNAIL_STYLE = {'display': 'block', 'width': f"{config.get('THUMBNAIL_SIZE', default='200')}px", 'height': 'auto'}
+ADMIN_THUMBNAIL_BACKGROUND_STYLE = {'background': '#808080'}

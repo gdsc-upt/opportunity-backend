@@ -44,3 +44,9 @@ PWA_APP_SPLASH_SCREEN = [
         'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
     }
 ]
+
+if not DEBUG:
+    SWAGGER_SETTINGS = {
+        'USE_SESSION_AUTH': False,
+        'VALIDATOR_URL': None,
+    }

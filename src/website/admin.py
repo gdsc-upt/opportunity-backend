@@ -1,3 +1,4 @@
+import admin_thumbnails
 from django.contrib.admin import register, ModelAdmin
 
 from common.admin import BaseModelAdmin, SlugableModelAdmin
@@ -5,6 +6,7 @@ from common.admin_site import admin_site
 from website.models import Partner, Faq, MenuItem, Article, Newsletter
 
 
+@admin_thumbnails.thumbnail('logo', background=True)
 @register(Partner, site=admin_site)
 class PartnerAdmin(BaseModelAdmin, SlugableModelAdmin):
     list_display = ('name', 'slug', 'website', 'logo', 'is_published')

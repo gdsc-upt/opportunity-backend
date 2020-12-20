@@ -7,3 +7,12 @@ class BaseModelAdmin(ModelAdmin):
 
 class SlugableModelAdmin(ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
+
+
+CREATED_UPDATED = (
+    'Created/Updated', {
+        'classes': ('collapse',),
+        'fields': ('created', 'updated',),
+        'description': 'Info about the time this entry was added here or updated'
+    }
+)

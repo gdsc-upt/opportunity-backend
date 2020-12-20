@@ -7,3 +7,4 @@ drf_yasg
 Pillow~=8.0.1
 django-cors-headers>=3.5.0
 django-pwa>=1.0.10
+django-admin-thumbnails==0.2.5
