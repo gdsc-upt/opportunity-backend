@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import EmailField, Model, DateTimeField, BooleanField, ImageField, URLField, SlugField, CharField
 from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
 from django.db import models
 
 
@@ -114,17 +113,25 @@ class Newsletter(models.Model):
     def __str__(self):
         return self.email
 
+
 class WantToHelp(models.Model):
-    name=models.CharField(max_length=225)
-    email=models.EmailField (max_length=255)
-    description=models.TextField()
+    name = models.CharField(max_length=225)
+    email = models.EmailField(max_length=255)
+    description = models.TextField()
 
 
 class OpportunityCategory(models.Model):
-    name=models.CharField(max_length=225)
-    slug=models.SlugField()
-    opportunities=models.ManyToManyField(Opportunity)
-    created=models.DateTimeField()
-    updated=models.DateTimeField()
+    name = models.CharField(max_length=225)
+    slug = models.SlugField()
+    opportunities = models.ManyToManyField(Opportunity)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, blank=True, null=True)
+    description = models.TextField(max_length=300)
+
+    def __str__(self):
+        return self.user
