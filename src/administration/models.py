@@ -112,3 +112,12 @@ class Newsletter(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, blank=True, null=True)
+    description = models.TextField(max_length=300)
+
+    def __str__(self):
+        return self.user.username
