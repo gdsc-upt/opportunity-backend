@@ -39,6 +39,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/api/admin/')),
+    path('', include('pwa.urls')),
     path('api/admin/', admin_site.urls),
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
     path('api/', include(router.urls))

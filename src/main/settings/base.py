@@ -13,8 +13,7 @@ import os
 from pathlib import Path
 
 from corsheaders.defaults import default_methods, default_headers
-from django.contrib.admin import AdminSite
-
+from administration.admin_site import admin_site
 from utils import Config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -24,8 +23,8 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 CONFIG_FILE = os.path.join(BASE_DIR, '..', 'config.yml')
 config = Config(CONFIG_FILE)
 
-AdminSite.site_title = config.get('SITE_TITLE', 'Django Template Project')
-AdminSite.site_header = config.get('SITE_HEADER', 'Django Template Project')
+admin_site.site_title = config.get('SITE_TITLE', 'Django Template Project')
+admin_site.site_header = config.get('SITE_HEADER', 'Django Template Project')
 SECRET_KEY = config.get('SECRET_KEY', raise_error=True)
 DEBUG = config.get('DEBUG', False, cast=bool)
 ALLOWED_HOSTS = config.get('ALLOWED_HOSTS', cast=list)
@@ -36,6 +35,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'rest_framework',
     'drf_yasg',
+    'pwa',
 
     'django.contrib.auth',
     'django.contrib.contenttypes',

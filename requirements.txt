@@ -6,3 +6,4 @@ django-rest-swagger
 drf_yasg
 Pillow~=8.0.1
 django-cors-headers>=3.5.0
+django-pwa>=1.0.10
