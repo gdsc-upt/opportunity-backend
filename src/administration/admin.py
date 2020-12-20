@@ -12,30 +12,33 @@ class UserAdmin(BaseUserAdmin):
     pass
 
 
+class BaseModelAdmin(admin.ModelAdmin):
+    readonly_fields = ('created','updated')
+
 class ExampleModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'age')
 
 
-class PartnerAdmin(admin.ModelAdmin):
+class PartnerAdmin(BaseModelAdmin):
     list_display = ('name', 'slug', 'website', 'logo', 'is_published')
     list_filter = ('is_published', 'created', 'updated')
     search_fields = ('name',)
     prepopulated_fields = {'slug': ('name',)}
 
 
-class FaqAdmin(admin.ModelAdmin):
+class FaqAdmin(BaseModelAdmin):
     list_display = ('question', 'answer', 'is_published')
     list_filter = ('is_published', 'created', 'updated')
     search_fields = ('question', 'answer')
     list_editable = ('is_published',)
 
 
-class OrganisationAdmin(admin.ModelAdmin):
+class OrganisationAdmin(BaseModelAdmin):
     search_fields = ('name',)
     prepopulated_fields = {'slug': ('name',)}
 
 
-class OpportunityAdmin(admin.ModelAdmin):
+class OpportunityAdmin(BaseModelAdmin):
     list_display = ('name', 'show_org_url', 'deadline', 'show_opp_url', 'description')
     list_filter = ('deadline', 'organisation')
     search_fields = ('name',)
@@ -59,14 +62,14 @@ class MenuItemAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(BaseModelAdmin):
     list_display = ('title', 'slug', 'image', 'description', 'is_published', 'created')
     list_filter = ('is_published', 'created', 'updated')
     search_fields = ('title',)
     prepopulated_fields = {'slug': ('title',)}
 
 
-class NewsletterAdmin(admin.ModelAdmin):
+class NewsletterAdmin(BaseModelAdmin):
     list_display = ('email', 'slug', 'other', 'created', 'updated')
     list_filter = ('created', 'updated')
     search_fields = ('email',)
@@ -79,7 +82,7 @@ class WantToHelpAdmin(admin.ModelAdmin):
     search_fields = ('email',)
 
 
-class OpportunityCategoryAdmin(admin.ModelAdmin):
+class OpportunityCategoryAdmin(BaseModelAdmin):
     list_display = ('name', 'slug', 'created', 'updated')
     list_filter = ('created', 'updated')
     search_fields = ('name',)
