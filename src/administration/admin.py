@@ -67,10 +67,9 @@ class ArticleAdmin(admin.ModelAdmin):
 
 
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ('email', 'slug', 'other', 'created', 'updated')
+    list_display = ('email', 'other', 'created', 'updated')
     list_filter = ('created', 'updated')
     search_fields = ('email',)
-    prepopulated_fields = {'slug': ('email',)}
 
 
 class WantToHelpAdmin(admin.ModelAdmin):

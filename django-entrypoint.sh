@@ -15,6 +15,12 @@ if [ $# -eq 0 ]; then
   find /usr/app -type d -exec chmod g+s {} +
 
   export PORT=8000
+
+  imports='from administration.models import User;'
+  create_superuser='User.objects.create_superuser("admin", "admin@example.com", "admin") if not User.objects.all() else True'
+
+  echo "$imports $create_superuser" | python manage.py shell
+
   su-exec django gunicorn main.wsgi --timeout 180 --log-file -
 else
   exec python manage.py "$@"

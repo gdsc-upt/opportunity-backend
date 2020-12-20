@@ -39,7 +39,7 @@ class ArticleViewSet(ReadOnlyModelViewSet):
 
 class NewsletterViewSet(ReadOnlyModelViewSet):
     serializer_class = NewsletterSerializer
-    queryset = Newsletter.objects.filter(is_published=True)
+    queryset = Newsletter.objects.all()
 
 
 class WantToHelpViewSet(ReadOnlyModelViewSet):

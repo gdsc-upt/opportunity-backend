@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import EmailField, Model, DateTimeField, BooleanField, ImageField, URLField, SlugField, CharField
+from django.db.models import EmailField, Model, DateTimeField, BooleanField, ImageField, URLField, SlugField, CharField, SET_NULL
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
@@ -30,6 +30,9 @@ class Partner(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'partners'
+
 
 class Faq(models.Model):
     question = models.CharField(max_length=300)
@@ -40,6 +43,9 @@ class Faq(models.Model):
 
     def __str__(self):
         return self.question
+
+    class Meta:
+        db_table = 'faqs'
 
 
 class Organisation(models.Model):
@@ -54,6 +60,9 @@ class Organisation(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        db_table = 'organisations'
 
 
 class Opportunity(models.Model):
@@ -72,6 +81,7 @@ class Opportunity(models.Model):
     class Meta:
         verbose_name = "opportunity"
         verbose_name_plural = "opportunities"
+        db_table = 'opportunities'
 
 
 class MenuItem(models.Model):
@@ -83,6 +93,9 @@ class MenuItem(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        db_table = 'menu_items'
 
 
 class Article(models.Model):
@@ -97,18 +110,30 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        db_table = 'articles'
+
+
+class OpportunityCategory(models.Model):
+    name = models.CharField(max_length=225)
+    slug = models.SlugField()
+    opportunities = models.ManyToManyField(Opportunity)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+
+    class Meta:
+        db_table = 'opportunity_categories'
+
 
 class Newsletter(models.Model):
     email = models.CharField(max_length=50)
-    slug = models.SlugField()
-    # opportunity_categories = models.ManyToManyField(OpportunityCategory)
+    opportunity_categories = models.ManyToManyField(OpportunityCategory)
     other = models.CharField(max_length=500)
-    is_published = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['email']
+        db_table = 'newsletters'
 
     def __str__(self):
         return self.email
@@ -119,19 +144,17 @@ class WantToHelp(models.Model):
     email = models.EmailField(max_length=255)
     description = models.TextField()
 
-
-class OpportunityCategory(models.Model):
-    name = models.CharField(max_length=225)
-    slug = models.SlugField()
-    opportunities = models.ManyToManyField(Opportunity)
-    created = models.DateTimeField()
-    updated = models.DateTimeField()
+    class Meta:
+        db_table = 'want_to_help'
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, blank=True, null=True)
+    organisation = models.ForeignKey(Organisation, on_delete=SET_NULL, null=True)
     description = models.TextField(max_length=300)
 
     def __str__(self):
         return self.user
+
+    class Meta:
+        db_table = 'user_profiles'
