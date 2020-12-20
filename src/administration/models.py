@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import EmailField, Model, DateTimeField, BooleanField, ImageField, URLField, SlugField, CharField
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 from django.db import models
 
 
@@ -115,5 +116,7 @@ class Newsletter(models.Model):
 
 class WantToHelp(models.Model):
     name=models.CharField(max_length=225)
-    email=models.models.EmailField (max_length=255)
-    description=models.TextArea()
+    email=models.EmailField (max_length=255)
+    description=models.TextField()
+    
+
