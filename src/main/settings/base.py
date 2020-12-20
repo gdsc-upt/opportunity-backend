@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 from corsheaders.defaults import default_methods, default_headers
-from administration.admin_site import admin_site
+from common.admin_site import admin_site
 from utils import Config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -30,13 +30,16 @@ DEBUG = config.get('DEBUG', False, cast=bool)
 ALLOWED_HOSTS = config.get('ALLOWED_HOSTS', cast=list)
 
 INSTALLED_APPS = [
-    'administration.apps.CustomAdminConfig',
     'administration',
+    'website',
+    'common',
+
     'rest_framework_swagger',
     'rest_framework',
     'drf_yasg',
     'pwa',
 
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

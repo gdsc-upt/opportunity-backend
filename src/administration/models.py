@@ -1,7 +1,22 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import EmailField, Model, DateTimeField, BooleanField, ImageField, URLField, SlugField, CharField, SET_NULL
+from django.db.models import EmailField, Model, DateTimeField, URLField, CharField, SET_NULL, TextField, \
+    ForeignKey, CASCADE, ManyToManyField, OneToOneField
 from django.utils.translation import gettext_lazy as _
-from django.db import models
+
+from common.models import SlugableModel, PublishableModel, CreatedUpdatedModel
+
+
+class Organisation(SlugableModel, PublishableModel, CreatedUpdatedModel):
+    name = CharField(max_length=20)
+    website = URLField(blank=True, default=None)
+    description = TextField(max_length=300, blank=True)
+    location = CharField(max_length=40, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'organisations'
 
 
 class User(AbstractUser):
@@ -11,137 +26,50 @@ class User(AbstractUser):
         db_table = 'auth_user'
 
 
-class PublishableModel(models.Model):
-    is_published = models.BooleanField()
-
-    class Meta:
-        abstract = True
-
-
-class CreatedUpdatedModel(models.Model):
-    created = DateTimeField(auto_now_add=True)
-    updated = DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class ExampleModel(Model):
-    name = models.CharField(max_length=30)
-    email = models.EmailField()
-    date = models.DateField(null=True)
-    age = models.IntegerField()
-
-
-class Partner(PublishableModel, CreatedUpdatedModel):
-    name = CharField(max_length=100)
-    slug = SlugField()
-    website = URLField(blank=True, default=None)
-    logo = ImageField(blank=True, default=None)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 'partners'
-
-class Faq(PublishableModel, CreatedUpdatedModel):
-    question = models.CharField(max_length=300)
-    answer = models.TextField(max_length=1000)
-
-    def __str__(self):
-        return self.question
-
-    class Meta:
-        db_table = 'faqs'
-
-class Organisation(PublishableModel, CreatedUpdatedModel):
-    name = models.CharField(max_length=20)
-    slug = models.SlugField(blank=True)
-    website = models.URLField(blank=True, default=None)
-    description = models.TextField(max_length=300, blank=True)
-    location = models.CharField(max_length=40, blank=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 'organisations'
-
-class Opportunity(CreatedUpdatedModel):
-    name = models.CharField(max_length=50)
-    slug = models.SlugField()
-    url = models.URLField(blank=True, default=None)
-    description = models.TextField(max_length=300)
-    deadline = models.DateTimeField()
-    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "opportunity"
-        verbose_name_plural = "opportunities"
-        db_table = 'opportunities'
-
-
-class MenuItem(models.Model):
-    name = models.CharField(max_length=30)
-    slug = models.SlugField()
-    link = models.URLField()
-    image = models.ImageField(blank=True, default=None)
-    parent = models.CharField(max_length=30, blank=True, default=None)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 'menu_items'
-
-class Article(PublishableModel, CreatedUpdatedModel):
-    title = models.CharField(max_length=100)
-    slug = models.SlugField()
-    image = models.ImageField(blank=True, default=None)
-    description = models.CharField(max_length=2000)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        db_table = 'articles'
-
-class Newsletter(PublishableModel, CreatedUpdatedModel):
-    email = models.CharField(max_length=50)
-    opportunity_categories = models.ManyToManyField(OpportunityCategory)
-    other = models.CharField(max_length=500)
-
-    class Meta:
-        db_table = 'newsletters'
-
-    def __str__(self):
-        return self.email
-
-
-class WantToHelp(models.Model):
-    name = models.CharField(max_length=225)
-    email = models.EmailField(max_length=255)
-    description = models.TextField()
-
-    class Meta:
-        db_table = 'want_to_help'
-
-class OpportunityCategory(CreatedUpdatedModel):
-    name = models.CharField(max_length=225)
-    slug = models.SlugField()
-    opportunities = models.ManyToManyField(Opportunity)
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    organisation = models.ForeignKey(Organisation, on_delete=SET_NULL, null=True)
-    description = models.TextField(max_length=300)
+class UserProfile(Model):
+    user = OneToOneField(User, on_delete=CASCADE)
+    organisation = ForeignKey(Organisation, on_delete=SET_NULL, null=True)
+    description = TextField(max_length=300)
 
     def __str__(self):
         return self.user
 
     class Meta:
         db_table = 'user_profiles'
+
+
+class Opportunity(SlugableModel, CreatedUpdatedModel):
+    name = CharField(max_length=50)
+    url = URLField(blank=True, default=None)
+    description = TextField(max_length=300)
+    deadline = DateTimeField()
+    organisation = ForeignKey(Organisation, on_delete=CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'opportunities'
+        verbose_name = _("opportunity")
+        verbose_name_plural = _("opportunities")
+
+
+class OpportunityCategory(SlugableModel, CreatedUpdatedModel):
+    name = CharField(max_length=225)
+    opportunities = ManyToManyField(Opportunity)
+
+    class Meta:
+        db_table = 'opportunity_categories'
+        verbose_name = _('opportunity category')
+        verbose_name_plural = _('opportunity categories')
+
+
+class WantToHelp(Model):
+    name = CharField(max_length=225)
+    email = EmailField(max_length=255)
+    description = TextField()
+
+    class Meta:
+        db_table = 'want_to_help'
+        verbose_name = _('want to help')
+        verbose_name_plural = _('want to help')

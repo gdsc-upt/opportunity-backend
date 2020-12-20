@@ -21,8 +21,9 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from administration.urls import router
-from administration.admin_site import admin_site
+from administration.urls import router as admin_router
+from website.urls import router as website_router
+from common.admin_site import admin_site
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -42,7 +43,8 @@ urlpatterns = [
     path('', include('pwa.urls')),
     path('api/admin/', admin_site.urls),
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
-    path('api/', include(router.urls))
+    path('api/', include(admin_router.urls)),
+    path('api/', include(website_router.urls))
 ]
 
 if settings.DEBUG:
