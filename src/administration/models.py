@@ -11,6 +11,21 @@ class User(AbstractUser):
         db_table = 'auth_user'
 
 
+class PublishableModel(models.Model):
+    is_published = models.BooleanField()
+
+    class Meta:
+        abstract = True
+
+
+class CreatedUpdatedModel(models.Model):
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class ExampleModel(Model):
     name = models.CharField(max_length=30)
     email = models.EmailField()
@@ -18,14 +33,11 @@ class ExampleModel(Model):
     age = models.IntegerField()
 
 
-class Partner(models.Model):
+class Partner(PublishableModel, CreatedUpdatedModel):
     name = CharField(max_length=100)
     slug = SlugField()
     website = URLField(blank=True, default=None)
     logo = ImageField(blank=True, default=None)
-    is_published = BooleanField()
-    created = DateTimeField(auto_now_add=True)
-    updated = DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -33,13 +45,9 @@ class Partner(models.Model):
     class Meta:
         db_table = 'partners'
 
-
-class Faq(models.Model):
+class Faq(PublishableModel, CreatedUpdatedModel):
     question = models.CharField(max_length=300)
     answer = models.TextField(max_length=1000)
-    is_published = models.BooleanField()
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.question
@@ -47,16 +55,12 @@ class Faq(models.Model):
     class Meta:
         db_table = 'faqs'
 
-
-class Organisation(models.Model):
+class Organisation(PublishableModel, CreatedUpdatedModel):
     name = models.CharField(max_length=20)
     slug = models.SlugField(blank=True)
     website = models.URLField(blank=True, default=None)
     description = models.TextField(max_length=300, blank=True)
     location = models.CharField(max_length=40, blank=True)
-    is_published = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -64,16 +68,13 @@ class Organisation(models.Model):
     class Meta:
         db_table = 'organisations'
 
-
-class Opportunity(models.Model):
+class Opportunity(CreatedUpdatedModel):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
     url = models.URLField(blank=True, default=None)
     description = models.TextField(max_length=300)
     deadline = models.DateTimeField()
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -97,15 +98,11 @@ class MenuItem(models.Model):
     class Meta:
         db_table = 'menu_items'
 
-
-class Article(models.Model):
+class Article(PublishableModel, CreatedUpdatedModel):
     title = models.CharField(max_length=100)
     slug = models.SlugField()
     image = models.ImageField(blank=True, default=None)
     description = models.CharField(max_length=2000)
-    is_published = models.BooleanField()
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -113,24 +110,10 @@ class Article(models.Model):
     class Meta:
         db_table = 'articles'
 
-
-class OpportunityCategory(models.Model):
-    name = models.CharField(max_length=225)
-    slug = models.SlugField()
-    opportunities = models.ManyToManyField(Opportunity)
-    created = models.DateTimeField()
-    updated = models.DateTimeField()
-
-    class Meta:
-        db_table = 'opportunity_categories'
-
-
-class Newsletter(models.Model):
+class Newsletter(PublishableModel, CreatedUpdatedModel):
     email = models.CharField(max_length=50)
     opportunity_categories = models.ManyToManyField(OpportunityCategory)
     other = models.CharField(max_length=500)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'newsletters'
@@ -147,6 +130,10 @@ class WantToHelp(models.Model):
     class Meta:
         db_table = 'want_to_help'
 
+class OpportunityCategory(CreatedUpdatedModel):
+    name = models.CharField(max_length=225)
+    slug = models.SlugField()
+    opportunities = models.ManyToManyField(Opportunity)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
