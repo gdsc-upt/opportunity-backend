@@ -112,3 +112,8 @@ class Newsletter(models.Model):
 
     def __str__(self):
         return self.email
+
+class WantToHelp(models.Model):
+    name=models.CharField(max_length=225)
+    email=models.models.EmailField (max_length=255)
+    description=models.TextArea()
