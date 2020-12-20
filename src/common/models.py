@@ -2,14 +2,14 @@ from django.db.models import Model, BooleanField, SlugField, DateTimeField
 
 
 class PublishableModel(Model):
-    is_published = BooleanField()
+    is_published = BooleanField(db_index=True)
 
     class Meta:
         abstract = True
 
 
 class SlugableModel(Model):
-    slug = SlugField(primary_key=True)
+    slug = SlugField(unique=True, db_index=True)
 
     class Meta:
         abstract = True

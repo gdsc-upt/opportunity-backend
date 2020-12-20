@@ -1,9 +1,8 @@
 from rest_framework.routers import DefaultRouter
 
-from administration.views import OrganizationViewSet,WantToHelpViewSet, OpportunityCatViewSet, UserProfileViewSet
+from administration.views import OrganizationViewSet, CategoryViewSet, UserProfileViewSet
 
 router = DefaultRouter()
-router.register('organisation', OrganizationViewSet)
-router.register('want-to-help', WantToHelpViewSet)
-router.register('opportunity-category', OpportunityCatViewSet)
-router.register('user-profile', UserProfileViewSet)
+router.register('organisations', OrganizationViewSet)
+router.register('categories', CategoryViewSet)
+router.register('user-profiles', UserProfileViewSet)

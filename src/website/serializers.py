@@ -1,6 +1,15 @@
 from rest_framework.serializers import ModelSerializer
 
-from website.models import Faq, Partner, MenuItem, Article, Newsletter
+from administration.serializers import CategorySerializer
+from website.models import Faq, Partner, MenuItem, Article, Newsletter, WantToHelp
+
+
+class NewsletterSerializer(ModelSerializer):
+    # categories = CategorySerializer(many=True)
+
+    class Meta:
+        model = Newsletter
+        fields = '__all__'
 
 
 class FaqSerializer(ModelSerializer):
@@ -27,7 +36,7 @@ class ArticleSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class NewsletterSerializer(ModelSerializer):
+class WantToHelpSerializer(ModelSerializer):
     class Meta:
-        model = Newsletter
+        model = WantToHelp
         fields = '__all__'

@@ -1,7 +1,20 @@
 from django.db.models import CharField, URLField, ImageField, TextField, Model, EmailField, ManyToManyField
+from django.utils.translation import gettext_lazy as _
 
-from administration.models import OpportunityCategory
+from administration.models import Category
 from common.models import SlugableModel, PublishableModel, CreatedUpdatedModel
+
+
+class Newsletter(CreatedUpdatedModel):
+    email = EmailField(max_length=250, unique=True)
+    categories = ManyToManyField(Category, blank=True)
+    other = CharField(max_length=500, blank=True, help_text='Other categories that are not listed above')
+
+    class Meta:
+        db_table = 'newsletters'
+
+    def __str__(self):
+        return self.email
 
 
 class Partner(SlugableModel, PublishableModel, CreatedUpdatedModel):
@@ -52,13 +65,12 @@ class Article(SlugableModel, PublishableModel, CreatedUpdatedModel):
         db_table = 'articles'
 
 
-class Newsletter(CreatedUpdatedModel):
-    email = EmailField(max_length=50)
-    opportunity_categories = ManyToManyField(OpportunityCategory)
-    other = CharField(max_length=500)
+class WantToHelp(Model):
+    name = CharField(max_length=225)
+    email = EmailField(max_length=255)
+    description = TextField()
 
     class Meta:
-        db_table = 'newsletters'
-
-    def __str__(self):
-        return self.email
+        db_table = 'want_to_help'
+        verbose_name = _('want to help')
+        verbose_name_plural = _('want to help')

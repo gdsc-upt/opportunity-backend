@@ -1,27 +1,22 @@
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 
-from administration.models import Organisation, WantToHelp, OpportunityCategory, UserProfile
+from administration.models import Organisation, Category, UserProfile
 
 
-class OrganizationSerializer(serializers.ModelSerializer):
+class OrganizationSerializer(ModelSerializer):
     class Meta:
         model = Organisation
         fields = '__all__'
 
 
-class WantToHelpSerializer(serializers.ModelSerializer):
+class CategorySerializer(ModelSerializer):
     class Meta:
-        model = WantToHelp
-        fields = '__all__'
+        model = Category
+        exclude = ('created', 'updated')
+        depth = 1
 
 
-class OpportunityCatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OpportunityCategory
-        fields = '__all__'
-
-
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = UserProfile
         fields = '__all__'

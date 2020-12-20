@@ -1,7 +1,14 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.mixins import CreateModelMixin
+from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 
-from website.models import Partner, Faq, MenuItem, Article, Newsletter
-from website.serializers import PartnerSerializer, FaqSerializer, MenuItemSerializer, ArticleSerializer, NewsletterSerializer
+from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp
+from website.serializers import PartnerSerializer, FaqSerializer, MenuItemSerializer, ArticleSerializer, NewsletterSerializer, \
+    WantToHelpSerializer
+
+
+class NewsletterViewSet(CreateModelMixin, GenericViewSet):
+    serializer_class = NewsletterSerializer
+    queryset = Newsletter.objects.all()
 
 
 class PartnerViewSet(ReadOnlyModelViewSet):
@@ -24,6 +31,6 @@ class ArticleViewSet(ReadOnlyModelViewSet):
     queryset = Article.objects.filter(is_published=True)
 
 
-class NewsletterViewSet(ReadOnlyModelViewSet):
-    serializer_class = NewsletterSerializer
-    queryset = Newsletter.objects.all()
+class WantToHelpViewSet(CreateModelMixin, GenericViewSet):
+    serializer_class = WantToHelpSerializer
+    queryset = WantToHelp.objects.all()

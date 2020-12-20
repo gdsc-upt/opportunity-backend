@@ -54,22 +54,15 @@ class Opportunity(SlugableModel, CreatedUpdatedModel):
         verbose_name_plural = _("opportunities")
 
 
-class OpportunityCategory(SlugableModel, CreatedUpdatedModel):
+class Category(SlugableModel, CreatedUpdatedModel):
     name = CharField(max_length=225)
-    opportunities = ManyToManyField(Opportunity)
+    opportunities = ManyToManyField(Opportunity, blank=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
-        db_table = 'opportunity_categories'
-        verbose_name = _('opportunity category')
-        verbose_name_plural = _('opportunity categories')
+        db_table = 'categories'
+        verbose_name = _('category')
+        verbose_name_plural = _('categories')
 
-
-class WantToHelp(Model):
-    name = CharField(max_length=225)
-    email = EmailField(max_length=255)
-    description = TextField()
-
-    class Meta:
-        db_table = 'want_to_help'
-        verbose_name = _('want to help')
-        verbose_name_plural = _('want to help')
