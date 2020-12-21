@@ -5,10 +5,10 @@ from website.views import PartnerViewSet, FaqViewSet, MenuItemViewSet, ArticleVi
 
 
 router = DefaultRouter()
-router.register('partners', PartnerViewSet)
-router.register('faqs', FaqViewSet)
+# router.register('partners', PartnerViewSet)
+# router.register('faqs', FaqViewSet)
 router.register('menu-items', MenuItemViewSet)
-router.register('articles', ArticleViewSet)
+# router.register('articles', ArticleViewSet)
 router.register('newsletter', NewsletterViewSet)
 router.register('want-to-help', WantToHelpViewSet)
 router.register('contact', ContactViewSet)
