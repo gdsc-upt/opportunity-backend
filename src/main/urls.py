@@ -20,6 +20,7 @@ from django.views.generic import RedirectView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from rest_framework.authtoken.views import obtain_auth_token
 
 from administration.urls import router as admin_router
 from website.urls import router as website_router
@@ -44,7 +45,8 @@ urlpatterns = [
     path('api/admin/', admin_site.urls),
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
     path('api/', include(admin_router.urls)),
-    path('api/', include(website_router.urls))
+    path('api/', include(website_router.urls)),
+    path('api/auth/token/', obtain_auth_token, name='api_token_auth')
 ]
 
 if settings.DEBUG:
