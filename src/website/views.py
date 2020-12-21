@@ -1,4 +1,6 @@
-from rest_framework.mixins import CreateModelMixin
+from django.db.models import QuerySet
+from django.http import Http404
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 
 from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact
@@ -21,9 +23,15 @@ class FaqViewSet(ReadOnlyModelViewSet):
     queryset = Faq.objects.filter(is_published=True)
 
 
-class MenuItemViewSet(ReadOnlyModelViewSet):
+class MenuItemViewSet(ListModelMixin, GenericViewSet):
     serializer_class = MenuItemSerializer
-    queryset = MenuItem.objects.all()
+    queryset: QuerySet[MenuItem] = MenuItem.objects.filter(parent__exact=None)
+
+    def get_object(self):
+        obj: MenuItem = super(MenuItemViewSet, self).get_object()
+        if obj.parent:
+            raise Http404
+        return obj
 
 
 class ArticleViewSet(ReadOnlyModelViewSet):

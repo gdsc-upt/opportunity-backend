@@ -1,3 +1,5 @@
+from django.db.models import QuerySet
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from website.models import Faq, Partner, MenuItem, Article, Newsletter, WantToHelp, Contact
@@ -22,9 +24,17 @@ class PartnerSerializer(ModelSerializer):
 
 
 class MenuItemSerializer(ModelSerializer):
+    children = SerializerMethodField('get_children')
+
+    @staticmethod
+    def get_children(menu_item: MenuItem):
+        qs: QuerySet[MenuItem] = MenuItem.objects.filter(parent=menu_item)
+        serializer = MenuItemSerializer(instance=qs, many=True, read_only=True)
+        return serializer.data
+
     class Meta:
         model = MenuItem
-        fields = '__all__'
+        exclude = ('parent', 'id')
 
 
 class ArticleSerializer(ModelSerializer):

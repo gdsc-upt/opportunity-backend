@@ -1,4 +1,5 @@
-from django.db.models import CharField, URLField, ImageField, TextField, Model, EmailField, ManyToManyField
+from django.db.models import CharField, URLField, ImageField, TextField, Model, EmailField, ManyToManyField, ForeignKey, SET_NULL, \
+    PositiveIntegerField, Q
 from django.utils.translation import gettext_lazy as _
 
 from administration.models import Category
@@ -8,7 +9,7 @@ from common.models import SlugableModel, PublishableModel, CreatedUpdatedModel
 class Newsletter(CreatedUpdatedModel):
     email = EmailField(max_length=250, unique=True)
     categories = ManyToManyField(Category, blank=True)
-    other = CharField(max_length=500, blank=True, help_text='Other categories that are not listed above')
+    other = CharField(max_length=500, blank=True, help_text=_('Other categories that are not listed above'))
 
     class Meta:
         db_table = 'newsletters'
@@ -41,16 +42,36 @@ class Faq(PublishableModel, CreatedUpdatedModel):
 
 
 class MenuItem(Model):
-    name = CharField(max_length=30)
-    link = URLField()
-    image = ImageField(blank=True, default=None)
-    parent = CharField(max_length=30, blank=True, default=None)
+    TYPES = (
+        ('ExternalLink', _('Link outside our domain (ex: google.com/milk)')),
+        ('InternalLink', _('Link inside our domain (ex: /contact)'))
+    )
+
+    name = CharField(max_length=200)
+    link = CharField(max_length=1000)
+    type = CharField(max_length=20, choices=TYPES, default='InternalLink')
+    parent = ForeignKey('MenuItem', on_delete=SET_NULL, blank=True, null=True, related_name='children')
+    order_index = PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
 
     def __str__(self):
         return self.name
 
+    # https://medium.com/@tnesztler/recursive-queries-as-querysets-for-parent-child-relationships-self-manytomany-in-django-671696dfe47
+    def get_children(self, include_self=True):
+        return MenuItem.objects.filter(self.get_children_filter(include_self))
+
+    def get_children_filter(self, include_self=True):
+        filters = Q(pk=0)
+        if include_self:
+            filters |= Q(pk=self.pk)
+        for item in MenuItem.objects.filter(parent=self):
+            if children_filter := item.get_children_filter(include_self=True):
+                filters |= children_filter
+        return filters
+
     class Meta:
         db_table = 'menu_items'
+        ordering = ['order_index']
 
 
 class Article(SlugableModel, PublishableModel, CreatedUpdatedModel):

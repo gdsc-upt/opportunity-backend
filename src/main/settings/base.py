@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'pwa',
     'corsheaders',
+    'adminsortable2',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -145,7 +146,6 @@ CORS_ORIGIN_WHITELIST = (
 )
 CORS_ALLOW_METHODS = default_methods
 CORS_ALLOW_HEADERS = default_headers
-
 
 #######################################
 # THUMBNAIL CONFIGS
