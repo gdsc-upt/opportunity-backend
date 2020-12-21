@@ -3,7 +3,7 @@ from django.contrib.admin import register, ModelAdmin, TabularInline
 
 from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_UPDATED
 from common.admin_site import admin_site
-from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp
+from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact
 
 
 class CategoriesInline(TabularInline):
@@ -69,3 +69,10 @@ class WantToHelpAdmin(ModelAdmin):
     list_display = ('name', 'email')
     list_filter = ('name', 'email')
     search_fields = ('email',)
+
+
+@register(Contact, site=admin_site)
+class ContactAdmin(ModelAdmin):
+    list_display = ('name', 'email', 'subject', 'message')
+    list_filter = ('created', 'updated')
+    search_fields = ('name', 'subject')

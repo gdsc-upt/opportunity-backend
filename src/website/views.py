@@ -1,9 +1,9 @@
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 
-from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp
-from website.serializers import PartnerSerializer, FaqSerializer, MenuItemSerializer, ArticleSerializer, NewsletterSerializer, \
-    WantToHelpSerializer
+from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact
+from website.serializers import PartnerSerializer, FaqSerializer, MenuItemSerializer, ArticleSerializer, \
+    NewsletterSerializer, WantToHelpSerializer, ContactSerializer
 
 
 class NewsletterViewSet(CreateModelMixin, GenericViewSet):
@@ -34,3 +34,8 @@ class ArticleViewSet(ReadOnlyModelViewSet):
 class WantToHelpViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = WantToHelpSerializer
     queryset = WantToHelp.objects.all()
+
+
+class ContactViewSet(CreateModelMixin, GenericViewSet):
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
