@@ -33,8 +33,16 @@ class OrganisationAdmin(BaseModelAdmin, SlugableModelAdmin):
 
 @register(Opportunity, site=admin_site)
 class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
-    list_display = ('name', 'show_org_url', 'deadline', 'show_opp_url', 'description')
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'url', 'organisation', 'description', 'deadline', 'is_published')
+        }),
+        CREATED_UPDATED
+    )
+    list_display = ('name', 'show_org_url', 'deadline', 'show_opp_url', 'description', 'is_published')
     list_filter = ('deadline', 'organisation')
+    list_editable = ('is_published',)
+    autocomplete_fields = ('organisation',)
     search_fields = ('name',)
 
     def show_opp_url(self, obj):
@@ -42,8 +50,9 @@ class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
 
     show_opp_url.short_description = "url"
 
-    def show_org_url(self, obj):
-        return format_html(f"<a href='{obj.organisation.get_absolute_url()}'>{obj.organisation.name}</a>")
+    def show_org_url(self, obj: Opportunity):
+        if obj.organisation:
+            return obj.organisation.get_obj_url()
 
     show_org_url.short_description = "organisation"
 

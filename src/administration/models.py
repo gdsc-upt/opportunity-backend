@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import EmailField, Model, DateTimeField, URLField, CharField, SET_NULL, TextField, \
     ForeignKey, CASCADE, ManyToManyField, OneToOneField
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from common.models import SlugableModel, PublishableModel, CreatedUpdatedModel
@@ -14,6 +15,14 @@ class Organisation(SlugableModel, PublishableModel, CreatedUpdatedModel):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return f'/organisations/{self.slug}'
+
+    def get_obj_url(self):
+        from django.urls import reverse
+        url = reverse(f'admin:{self._meta.app_label}_{self._meta.model_name}_change', args=[str(self.id)])
+        return format_html(f"<a href='{url}'>{self.name}</a>")
 
     class Meta:
         db_table = 'organisations'
@@ -38,7 +47,7 @@ class UserProfile(Model):
         db_table = 'user_profiles'
 
 
-class Opportunity(SlugableModel, CreatedUpdatedModel):
+class Opportunity(PublishableModel, SlugableModel, CreatedUpdatedModel):
     name = CharField(max_length=50)
     url = URLField(blank=True, default=None)
     description = TextField(max_length=300)
@@ -65,4 +74,3 @@ class Category(SlugableModel, CreatedUpdatedModel):
         db_table = 'categories'
         verbose_name = _('category')
         verbose_name_plural = _('categories')
-

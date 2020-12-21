@@ -1,6 +1,13 @@
 from rest_framework.serializers import ModelSerializer
 
-from administration.models import Organisation, Category, UserProfile
+from administration.models import Organisation, Category, UserProfile, Opportunity
+
+
+class OpportunitySerializer(ModelSerializer):
+    class Meta:
+        model = Opportunity
+        exclude = ('updated',)
+        depth = 1
 
 
 class OrganizationSerializer(ModelSerializer):
