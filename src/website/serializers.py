@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
 from administration.serializers import CategorySerializer
-from website.models import Faq, Partner, MenuItem, Article, Newsletter, WantToHelp
+from website.models import Faq, Partner, MenuItem, Article, Newsletter, WantToHelp, Contact
 
 
 class NewsletterSerializer(ModelSerializer):
@@ -40,3 +40,9 @@ class WantToHelpSerializer(ModelSerializer):
     class Meta:
         model = WantToHelp
         fields = '__all__'
+
+
+class ContactSerializer(ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Contact

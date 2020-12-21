@@ -74,3 +74,16 @@ class WantToHelp(Model):
         db_table = 'want_to_help'
         verbose_name = _('want to help')
         verbose_name_plural = _('want to help')
+
+
+class Contact(CreatedUpdatedModel):
+    name = CharField(max_length=200)
+    email = EmailField(max_length=200)
+    subject = CharField(max_length=300)
+    message = TextField(max_length=2000)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'contacts'
