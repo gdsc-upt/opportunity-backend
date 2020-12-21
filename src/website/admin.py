@@ -72,7 +72,13 @@ class WantToHelpAdmin(ModelAdmin):
 
 
 @register(Contact, site=admin_site)
-class ContactAdmin(ModelAdmin):
+class ContactAdmin(BaseModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'email', 'subject', 'message')
+        }),
+        CREATED_UPDATED
+    )
     list_display = ('name', 'email', 'subject', 'message')
     list_filter = ('created', 'updated')
     search_fields = ('name', 'subject')
