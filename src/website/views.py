@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.db.models import QuerySet
 from django.http import Http404
 from rest_framework import permissions
@@ -50,3 +51,17 @@ class ContactViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
     permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        res = super(ContactViewSet, self).create(request, *args, **kwargs)
+        if res.status_code == 201:
+            name = request.data["name"]
+            email = request.data["email"]
+            subject = request.data["subject"]
+            message = request.data["message"]
+            send_mail(subject, "From: " + name + ", " + email + "\n" + message, "testbackendemail001@gmail.com",
+                      ["mail1@mailinator.com"])
+            send_mail("Submit Opportunity", "Iti multumim ca ne-ai contactat!", "testbackendemail001@gmail.com",
+                      [email])
+            print(request)
+        return res
