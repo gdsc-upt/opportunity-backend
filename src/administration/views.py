@@ -1,4 +1,7 @@
+from django.contrib.auth import get_user_model
+from rest_framework import permissions
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.generics import CreateAPIView
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.authtoken.models import Token
@@ -6,7 +9,7 @@ from rest_framework.response import Response
 
 from administration.models import Organisation, Category, UserProfile, Opportunity
 from administration.serializers import OrganizationSerializer, CategorySerializer, UserProfileSerializer, \
-    OpportunitySerializer
+    OpportunitySerializer, UserSerializer
 
 
 class OpportunityViewSet(CreateModelMixin, ReadOnlyModelViewSet):
@@ -44,3 +47,11 @@ class CustomAuthToken(ObtainAuthToken):
             'username': user.username,
             'email': user.email
         })
+
+class CreateUserView(CreateAPIView):
+
+    model = get_user_model()
+    permission_classes = [
+        permissions.AllowAny # Or anon users can't register
+    ]
+    serializer_class = UserSerializer
