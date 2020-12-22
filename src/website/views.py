@@ -1,5 +1,6 @@
 from django.db.models import QuerySet
 from django.http import Http404
+from rest_framework import permissions
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 
@@ -42,8 +43,10 @@ class ArticleViewSet(ReadOnlyModelViewSet):
 class WantToHelpViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = WantToHelpSerializer
     queryset = WantToHelp.objects.all()
+    permission_classes = [permissions.AllowAny]
 
 
 class ContactViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
+    permission_classes = [permissions.AllowAny]

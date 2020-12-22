@@ -15,6 +15,7 @@ from administration.serializers import OrganizationSerializer, CategorySerialize
 class OpportunityViewSet(CreateModelMixin, ReadOnlyModelViewSet):
     serializer_class = OpportunitySerializer
     queryset = Opportunity.objects.filter(is_published=True)
+    permission_classes = [permissions.AllowAny]
 
 
 class OrganizationViewSet(ReadOnlyModelViewSet):
@@ -48,10 +49,10 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email
         })
 
-class CreateUserView(CreateAPIView):
 
+class CreateUserView(CreateAPIView):
     model = get_user_model()
     permission_classes = [
-        permissions.AllowAny # Or anon users can't register
+        permissions.AllowAny  # Or anon users can't register
     ]
     serializer_class = UserSerializer
