@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     'rest_framework_swagger',
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg',
     'pwa',
     'corsheaders',
@@ -48,6 +49,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -149,5 +170,6 @@ CORS_ALLOW_HEADERS = default_headers
 
 #######################################
 # THUMBNAIL CONFIGS
-ADMIN_THUMBNAIL_STYLE = {'display': 'block', 'width': f"{config.get('THUMBNAIL_SIZE', default='200')}px", 'height': 'auto'}
+ADMIN_THUMBNAIL_STYLE = {'display': 'block', 'width': f"{config.get('THUMBNAIL_SIZE', default='200')}px",
+                         'height': 'auto'}
 ADMIN_THUMBNAIL_BACKGROUND_STYLE = {'background': '#808080'}
