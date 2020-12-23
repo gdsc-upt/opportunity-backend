@@ -22,6 +22,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from administration.urls import router as admin_router
+from administration.views import CustomAuthToken, CreateUserView
 from website.urls import router as website_router
 from common.admin_site import admin_site
 
@@ -42,9 +43,11 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/api/admin/')),
     path('', include('pwa.urls')),
     path('api/admin/', admin_site.urls),
-    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
+    path('api/swagger/', schema_view.with_ui()),
     path('api/', include(admin_router.urls)),
-    path('api/', include(website_router.urls))
+    path('api/', include(website_router.urls)),
+    path('api/auth/token/', CustomAuthToken.as_view()),
+    path('api/auth/register/', CreateUserView.as_view())
 ]
 
 if settings.DEBUG:
