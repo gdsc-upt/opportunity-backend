@@ -151,3 +151,9 @@ CORS_ALLOW_HEADERS = default_headers
 # THUMBNAIL CONFIGS
 ADMIN_THUMBNAIL_STYLE = {'display': 'block', 'width': f"{config.get('THUMBNAIL_SIZE', default='200')}px", 'height': 'auto'}
 ADMIN_THUMBNAIL_BACKGROUND_STYLE = {'background': '#808080'}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'DEFAULT_MODEL_RENDERING': 'example',
+    'DEFAULT_MODEL_DEPTH': 1,
+}
