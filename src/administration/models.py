@@ -74,3 +74,4 @@ class Category(SlugableModel, CreatedUpdatedModel):
         db_table = 'categories'
         verbose_name = _('category')
         verbose_name_plural = _('categories')
+

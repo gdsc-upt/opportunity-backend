@@ -2,7 +2,7 @@ from django.db.models import QuerySet
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from website.models import Faq, Partner, MenuItem, Article, Newsletter, WantToHelp, Contact
+from website.models import Faq, Partner, MenuItem, Article, Newsletter, WantToHelp, Contact, Setting
 
 
 class NewsletterSerializer(ModelSerializer):
@@ -53,3 +53,9 @@ class ContactSerializer(ModelSerializer):
     class Meta:
         model = Contact
         exclude = 'created', 'updated', 'id'
+
+
+class SettingSerializer(ModelSerializer):
+    class Meta:
+        model = Setting
+        fields = 'all'

@@ -1,4 +1,5 @@
-from django.db.models import CharField, URLField, ImageField, TextField, Model, EmailField, ManyToManyField, ForeignKey, SET_NULL, \
+from django.db.models import CharField, URLField, ImageField, TextField, Model, EmailField, ManyToManyField, ForeignKey, \
+    SET_NULL, \
     PositiveIntegerField, Q
 from django.utils.translation import gettext_lazy as _
 
@@ -108,3 +109,21 @@ class Contact(CreatedUpdatedModel):
 
     class Meta:
         db_table = 'contacts'
+
+
+class Setting(SlugableModel, CreatedUpdatedModel):
+    TYPES = (
+        ("TEXT", "Text"),
+        ("IMAGE", "Image")
+    )
+
+    description = TextField(max_length=250, blank=True, default='')
+    type = CharField(max_length=5, choices=TYPES, default='TEXT')
+    value = TextField(max_length=300, blank=True, default='')
+    image = ImageField(blank=True, default=None)
+
+    class Meta:
+        db_table = 'settings'
+
+    def str(self):
+        return self.slug.replace('_', ' ').capitalize()

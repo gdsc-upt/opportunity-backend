@@ -8,9 +8,9 @@ from rest_framework import permissions, status
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 
-from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact
+from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact, Setting
 from website.serializers import PartnerSerializer, FaqSerializer, MenuItemSerializer, ArticleSerializer, \
-    NewsletterSerializer, WantToHelpSerializer, ContactSerializer
+    NewsletterSerializer, WantToHelpSerializer, ContactSerializer, SettingSerializer
 
 
 class NewsletterViewSet(CreateModelMixin, GenericViewSet):
@@ -78,3 +78,9 @@ class ContactViewSet(CreateModelMixin, GenericViewSet):
         if res.status_code == 201 and settings.DEBUG:
             print(f"From: {res.data['name']}, {res.data['email']}\n{res.data['message']}")
         return res
+
+
+class SettingViewSet(ReadOnlyModelViewSet):
+    serializer_class = SettingSerializer
+    queryset = Setting.objects.all()
+    lookup_field = 'slug'

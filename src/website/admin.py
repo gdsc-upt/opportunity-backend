@@ -7,7 +7,7 @@ from django.db.models import QuerySet, Q
 
 from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_UPDATED, SortableModelAdmin
 from common.admin_site import admin_site
-from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact
+from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact, Setting
 
 
 class MenuItemsParentFilter(SimpleListFilter):
@@ -119,3 +119,15 @@ class ContactAdmin(BaseModelAdmin):
     list_display = ('name', 'email', 'subject', 'message')
     list_filter = ('created', 'updated')
     search_fields = ('name', 'subject')
+
+
+@register(Setting, site=admin_site)
+class SettingAdmin(BaseModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('slug', 'description', 'type', 'value', 'image')
+        }),
+        CREATED_UPDATED
+    )
+    list_display = ('slug', 'description', 'type', 'value', 'image')
+    search_fields = ('slug',)
