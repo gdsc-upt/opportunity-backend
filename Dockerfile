@@ -1,5 +1,12 @@
 FROM python:3.9-alpine
 
+ENV PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  PYTHONHASHSEED=random \
+  PIP_NO_CACHE_DIR=off \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_DEFAULT_TIMEOUT=100
+
 WORKDIR /usr/app
 
 RUN addgroup -g 101 -S django && adduser -u 101 -D -S -G django django
@@ -14,7 +21,7 @@ RUN apk add tzdata --virtual .tzdata \
 # some packages have runtime dependencies on system libraries
 RUN set -ex && apk add --no-cache libpq zlib-dev jpeg-dev
 
-COPY requirements.txt ./
+COPY poetry.lock pyproject.toml ./
 
 # some packages need to be compiled from source and have build-time dependencies
 RUN set -ex \
@@ -24,10 +31,12 @@ RUN set -ex \
         musl-dev \
         # these 2 are for postgres & gis
         python3-dev \
+        libffi-dev \
         postgresql-dev\
-    && python -m pip install --upgrade pip \
-    && python -m pip install gunicorn whitenoise \
-    && pip install --no-cache-dir -r requirements.txt \
+    && pip install poetry \
+    && poetry config virtualenvs.create false \
+    && poetry install --no-dev --no-interaction --no-ansi \
+    && pip install gunicorn whitenoise \
     && apk del .build-deps
 
 EXPOSE 8000
