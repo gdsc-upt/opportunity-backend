@@ -34,10 +34,9 @@ INSTALLED_APPS = [
     'website',
     'common',
 
-    'rest_framework_swagger',
     'rest_framework',
     'rest_framework.authtoken',
-    'drf_yasg',
+    'drf_spectacular',
     'pwa',
     'corsheaders',
     'adminsortable2',
@@ -58,6 +57,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 MIDDLEWARE = [
@@ -167,17 +167,32 @@ ADMIN_THUMBNAIL_STYLE = {
 }
 ADMIN_THUMBNAIL_BACKGROUND_STYLE = {'background': '#808080'}
 
-SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
-    'DEFAULT_MODEL_RENDERING': 'example',
-    'DEFAULT_MODEL_DEPTH': 1,
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'Authorization'
-        }
+SPECTACULAR_SETTINGS = {
+    # path prefix is used for tagging the discovered operations.
+    # use '/api/v[0-9]' for tagging apis like '/api/v1/albums' with ['albums']
+    'SCHEMA_PATH_PREFIX': r'/api',
+    # Dictionary of configurations to pass to the SwaggerUI({ ... })
+    # https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
+    # 'SWAGGER_UI_SETTINGS': {
+    #     'deepLinking': True,
+    # },
+    'SWAGGER_UI_FAVICON_HREF': '//unpkg.com/swagger-ui-dist@3.35.1/favicon-32x32.png',
+    # General schema metadata. Refer to spec for valid inputs
+    # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#openapi-object
+    'TITLE': admin_site.site_title + ' API',
+    'DESCRIPTION': 'API Description',
+    'TOS': None,
+    # Optional: MAY contain 'name', 'url', 'email'
+    'CONTACT': {
+        'name': 'Opportunity Dev Team',
     },
+    # Optional: MUST contain 'name', MAY contain URL
+    'LICENSE': {},
+    'VERSION': '0.1.0',
+    # Tags defined in the global scope
+    # 'TAGS': [],
+    # # Optional: MUST contain 'url', may contain 'description'
+    # 'EXTERNAL_DOCS': {},
 }
 
 MAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

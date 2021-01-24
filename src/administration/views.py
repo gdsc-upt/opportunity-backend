@@ -1,5 +1,5 @@
 from django.utils.decorators import method_decorator
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from rest_framework import permissions
@@ -15,21 +15,19 @@ from administration.serializers import OrganizationSerializer, CategorySerialize
     OpportunitySerializer, UserSerializer
 
 
-@method_decorator(name='create', decorator=swagger_auto_schema(
+@method_decorator(name='create', decorator=extend_schema(
     operation_id='Create new opportunity',
-    operation_description='Opportunities endpoint description',
-    operation_summary='Opportunities endpoint summary',
+    description='Opportunities endpoint description',
+    summary='Opportunities endpoint summary',
     responses={
-        status.HTTP_200_OK: OpportunitySerializer(),
-        status.HTTP_404_NOT_FOUND: 'Not found'
+        status.HTTP_200_OK: OpportunitySerializer,
     }))
-@method_decorator(name='list', decorator=swagger_auto_schema(
+@method_decorator(name='list', decorator=extend_schema(
     operation_id='Get all published opportunities',
-    operation_description='Opportunities endpoint description',
-    operation_summary='Opportunities endpoint summary',
+    description='Opportunities endpoint description',
+    summary='Opportunities endpoint summary',
     responses={
         status.HTTP_200_OK: OpportunitySerializer(many=True),
-        status.HTTP_404_NOT_FOUND: 'Not found'
     }))
 class OpportunityViewSet(CreateModelMixin, ReadOnlyModelViewSet):
     serializer_class = OpportunitySerializer

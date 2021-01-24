@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.db.models import QuerySet
 from django.http import Http404
 from django.utils.decorators import method_decorator
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import permissions, status
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
@@ -50,17 +50,14 @@ class WantToHelpViewSet(CreateModelMixin, GenericViewSet):
     permission_classes = [permissions.AllowAny]
 
 
-@method_decorator(
-    name='create',
-    decorator=swagger_auto_schema(
-        operation_id='Add message',
-        operation_description='Saves messages to database and sends email both to the one that submitted form and to the team\'s email',
-        operation_summary='Send messages to Opportunity team',
-        security=[],
+@extend_schema_view(
+    create=extend_schema(
+        description='Saves messages to database and sends email both to the one that submitted form and to the team\'s email',
+        summary='Send messages to Opportunity team',
+        auth=[],
         responses={
-            status.HTTP_201_CREATED: ContactSerializer(),
+            status.HTTP_201_CREATED: ContactSerializer,
         },
-        tags=['Contact']
     ))
 class ContactViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = ContactSerializer
