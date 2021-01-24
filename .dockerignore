@@ -2,6 +2,8 @@
 venv
 .idea
 .gitignore
+.pylintrc
+.lint.sh
 README.md
 docker-compose.yml
 template.config.yml

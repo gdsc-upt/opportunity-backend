@@ -5,6 +5,7 @@ IF NOT EXIST venv (
     where python
     python --version || goto :error
     pip install pyyaml
+    pip install poetry
     echo Checking variables configuration
     python src/check_config_vars.py || goto :error
 )
