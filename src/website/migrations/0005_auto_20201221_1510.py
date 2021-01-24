@@ -7,22 +7,28 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0004_auto_20201221_1455'),
+        ("website", "0004_auto_20201221_1455"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='menuitem',
-            options={'ordering': ['order_index']},
+            name="menuitem",
+            options={"ordering": ["order_index"]},
         ),
         migrations.AddField(
-            model_name='menuitem',
-            name='order_index',
+            model_name="menuitem",
+            name="order_index",
             field=models.PositiveIntegerField(default=0),
         ),
         migrations.AlterField(
-            model_name='menuitem',
-            name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='children', to='website.menuitem'),
+            model_name="menuitem",
+            name="parent",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="children",
+                to="website.menuitem",
+            ),
         ),
     ]

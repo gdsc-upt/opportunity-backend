@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0003_auto_20201221_1455'),
+        ("website", "0003_auto_20201221_1455"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='menuitem',
-            name='link',
+            model_name="menuitem",
+            name="link",
             field=models.CharField(max_length=1000),
         ),
     ]

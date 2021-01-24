@@ -4,15 +4,18 @@ from typing import AnyStr, Callable
 import yaml
 
 
-class Config(object):
+class Config:
     def __init__(self, config_file):
         if not os.path.exists(config_file):
-            raise FileNotFoundError('Could not find "config.yml" file. Make sure to read the instructions from README.md')
+            raise FileNotFoundError(
+                'Could not find "config.yml" file. '
+                "Make sure to read the instructions from README.md"
+            )
 
         with open(config_file) as file:
             self.__config = yaml.safe_load(file)
             if not self.__config:
-                raise Exception('Config file is empty!')
+                raise Exception("Config file is empty!")
 
     def get(self, var_name: AnyStr, default=None, cast: Callable = str, raise_error: bool = False):
         value = self.__config.get(var_name, None)
@@ -26,5 +29,5 @@ class Config(object):
             return cast(default)
 
         if raise_error:
-            raise LookupError(f'Cannot find value for setting {var_name}!')
+            raise LookupError(f"Cannot find value for setting {var_name}!")
         return None

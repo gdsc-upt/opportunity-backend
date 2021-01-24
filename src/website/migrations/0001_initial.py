@@ -8,110 +8,152 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('administration', '0001_initial'),
+        ("administration", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Article',
+            name="Article",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_published', models.BooleanField(db_index=True)),
-                ('slug', models.SlugField(unique=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('image', models.ImageField(blank=True, default=None, upload_to='')),
-                ('description', models.CharField(max_length=2000)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("is_published", models.BooleanField(db_index=True)),
+                ("slug", models.SlugField(unique=True)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=100)),
+                ("image", models.ImageField(blank=True, default=None, upload_to="")),
+                ("description", models.CharField(max_length=2000)),
             ],
             options={
-                'db_table': 'articles',
+                "db_table": "articles",
             },
         ),
         migrations.CreateModel(
-            name='Contact',
+            name="Contact",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=200)),
-                ('email', models.EmailField(max_length=200)),
-                ('subject', models.CharField(max_length=300)),
-                ('message', models.TextField(max_length=2000)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=200)),
+                ("email", models.EmailField(max_length=200)),
+                ("subject", models.CharField(max_length=300)),
+                ("message", models.TextField(max_length=2000)),
             ],
             options={
-                'db_table': 'contacts',
+                "db_table": "contacts",
             },
         ),
         migrations.CreateModel(
-            name='Faq',
+            name="Faq",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_published', models.BooleanField(db_index=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('question', models.CharField(max_length=300)),
-                ('answer', models.TextField(max_length=1000)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("is_published", models.BooleanField(db_index=True)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("question", models.CharField(max_length=300)),
+                ("answer", models.TextField(max_length=1000)),
             ],
             options={
-                'db_table': 'faqs',
+                "db_table": "faqs",
             },
         ),
         migrations.CreateModel(
-            name='MenuItem',
+            name="MenuItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=30)),
-                ('link', models.URLField()),
-                ('image', models.ImageField(blank=True, default=None, upload_to='')),
-                ('parent', models.CharField(blank=True, default=None, max_length=30)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=30)),
+                ("link", models.URLField()),
+                ("image", models.ImageField(blank=True, default=None, upload_to="")),
+                ("parent", models.CharField(blank=True, default=None, max_length=30)),
             ],
             options={
-                'db_table': 'menu_items',
+                "db_table": "menu_items",
             },
         ),
         migrations.CreateModel(
-            name='Partner',
+            name="Partner",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_published', models.BooleanField(db_index=True)),
-                ('slug', models.SlugField(unique=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=100)),
-                ('website', models.URLField(blank=True, default=None)),
-                ('logo', models.ImageField(blank=True, default=None, upload_to='')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("is_published", models.BooleanField(db_index=True)),
+                ("slug", models.SlugField(unique=True)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=100)),
+                ("website", models.URLField(blank=True, default=None)),
+                ("logo", models.ImageField(blank=True, default=None, upload_to="")),
             ],
             options={
-                'db_table': 'partners',
+                "db_table": "partners",
             },
         ),
         migrations.CreateModel(
-            name='WantToHelp',
+            name="WantToHelp",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=225)),
-                ('email', models.EmailField(max_length=255)),
-                ('description', models.TextField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=225)),
+                ("email", models.EmailField(max_length=255)),
+                ("description", models.TextField()),
             ],
             options={
-                'verbose_name': 'want to help',
-                'verbose_name_plural': 'want to help',
-                'db_table': 'want_to_help',
+                "verbose_name": "want to help",
+                "verbose_name_plural": "want to help",
+                "db_table": "want_to_help",
             },
         ),
         migrations.CreateModel(
-            name='Newsletter',
+            name="Newsletter",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('email', models.EmailField(max_length=250, unique=True)),
-                ('other', models.CharField(blank=True, help_text='Other categories that are not listed above', max_length=500)),
-                ('categories', models.ManyToManyField(blank=True, to='administration.Category')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("email", models.EmailField(max_length=250, unique=True)),
+                (
+                    "other",
+                    models.CharField(
+                        blank=True,
+                        help_text="Other categories that are not listed above",
+                        max_length=500,
+                    ),
+                ),
+                ("categories", models.ManyToManyField(blank=True, to="administration.Category")),
             ],
             options={
-                'db_table': 'newsletters',
+                "db_table": "newsletters",
             },
         ),
     ]

@@ -10,15 +10,15 @@ from common.admin_site import admin_site
 
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/api/admin/')),
-    path('', include('pwa.urls')),
-    path('api/admin/', admin_site.urls),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/swagger/', SpectacularSwaggerView.as_view(url_name='schema')),
-    path('api/', include(admin_router.urls)),
-    path('api/', include(website_router.urls)),
-    path('api/auth/token/', CustomAuthToken.as_view()),
-    path('api/auth/register/', CreateUserView.as_view())
+    path("", RedirectView.as_view(url="/api/admin/")),
+    path("", include("pwa.urls")),
+    path("api/admin/", admin_site.urls),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/swagger/", SpectacularSwaggerView.as_view(url_name="schema")),
+    path("api/", include(admin_router.urls)),
+    path("api/", include(website_router.urls)),
+    path("api/auth/token/", CustomAuthToken.as_view()),
+    path("api/auth/register/", CreateUserView.as_view()),
 ]
 
 if settings.DEBUG:
@@ -27,4 +27,4 @@ if settings.DEBUG:
 
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += [path('api/__debug__/', include(debug_toolbar.urls), name='debug')]
+    urlpatterns += [path("api/__debug__/", include(debug_toolbar.urls), name="debug")]

@@ -1,6 +1,17 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import EmailField, Model, DateTimeField, URLField, CharField, SET_NULL, TextField, \
-    ForeignKey, CASCADE, ManyToManyField, OneToOneField
+from django.db.models import (
+    EmailField,
+    Model,
+    DateTimeField,
+    URLField,
+    CharField,
+    SET_NULL,
+    TextField,
+    ForeignKey,
+    CASCADE,
+    ManyToManyField,
+    OneToOneField,
+)
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
@@ -14,25 +25,28 @@ class Organisation(SlugableModel, PublishableModel, CreatedUpdatedModel):
     location = CharField(max_length=40, blank=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     def get_absolute_url(self):
-        return f'/organisations/{self.slug}'
+        return f"/organisations/{self.slug}"
 
     def get_obj_url(self):
         from django.urls import reverse
-        url = reverse(f'admin:{self._meta.app_label}_{self._meta.model_name}_change', args=[str(self.id)])
+
+        url = reverse(
+            f"admin:{self._meta.app_label}_{self._meta.model_name}_change", args=[str(self.id)]
+        )
         return format_html(f"<a href='{url}'>{self.name}</a>")
 
     class Meta:
-        db_table = 'organisations'
+        db_table = "organisations"
 
 
 class User(AbstractUser):
-    email = EmailField(_('email address'), unique=True)
+    email = EmailField(_("email address"), unique=True)
 
     class Meta:
-        db_table = 'auth_user'
+        db_table = "auth_user"
 
 
 class UserProfile(Model):
@@ -41,10 +55,10 @@ class UserProfile(Model):
     description = TextField(max_length=300)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
     class Meta:
-        db_table = 'user_profiles'
+        db_table = "user_profiles"
 
 
 class Opportunity(PublishableModel, SlugableModel, CreatedUpdatedModel):
@@ -55,10 +69,10 @@ class Opportunity(PublishableModel, SlugableModel, CreatedUpdatedModel):
     organisation = ForeignKey(Organisation, on_delete=CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
-        db_table = 'opportunities'
+        db_table = "opportunities"
         verbose_name = _("opportunity")
         verbose_name_plural = _("opportunities")
 
@@ -68,10 +82,9 @@ class Category(SlugableModel, CreatedUpdatedModel):
     opportunities = ManyToManyField(Opportunity, blank=True)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
-        db_table = 'categories'
-        verbose_name = _('category')
-        verbose_name_plural = _('categories')
-
+        db_table = "categories"
+        verbose_name = _("category")
+        verbose_name_plural = _("categories")

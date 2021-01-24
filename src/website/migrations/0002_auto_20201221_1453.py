@@ -7,27 +7,39 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0001_initial'),
+        ("website", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='menuitem',
-            name='image',
+            model_name="menuitem",
+            name="image",
         ),
         migrations.AddField(
-            model_name='menuitem',
-            name='type',
-            field=models.CharField(choices=[('ExternalLink', 'Link outside our domain (ex: google.com/milk)'), ('InternalLink', 'Link inside our domain (ex: /contact')], default='InternalLink', max_length=20),
+            model_name="menuitem",
+            name="type",
+            field=models.CharField(
+                choices=[
+                    ("ExternalLink", "Link outside our domain (ex: google.com/milk)"),
+                    ("InternalLink", "Link inside our domain (ex: /contact"),
+                ],
+                default="InternalLink",
+                max_length=20,
+            ),
         ),
         migrations.AlterField(
-            model_name='menuitem',
-            name='name',
+            model_name="menuitem",
+            name="name",
             field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
-            model_name='menuitem',
-            name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='website.menuitem'),
+            model_name="menuitem",
+            name="parent",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="website.menuitem",
+            ),
         ),
     ]

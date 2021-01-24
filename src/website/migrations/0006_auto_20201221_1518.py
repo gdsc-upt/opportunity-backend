@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0005_auto_20201221_1510'),
+        ("website", "0005_auto_20201221_1510"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='menuitem',
-            name='order_index',
+            model_name="menuitem",
+            name="order_index",
             field=models.PositiveIntegerField(db_index=True, default=0),
         ),
     ]

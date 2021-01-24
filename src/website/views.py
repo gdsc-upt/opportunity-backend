@@ -2,15 +2,22 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models import QuerySet
 from django.http import Http404
-from django.utils.decorators import method_decorator
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import permissions, status
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 
 from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact, Setting
-from website.serializers import PartnerSerializer, FaqSerializer, MenuItemSerializer, ArticleSerializer, \
-    NewsletterSerializer, WantToHelpSerializer, ContactSerializer, SettingSerializer
+from website.serializers import (
+    PartnerSerializer,
+    FaqSerializer,
+    MenuItemSerializer,
+    ArticleSerializer,
+    NewsletterSerializer,
+    WantToHelpSerializer,
+    ContactSerializer,
+    SettingSerializer,
+)
 
 
 class NewsletterViewSet(CreateModelMixin, GenericViewSet):
@@ -33,7 +40,7 @@ class MenuItemViewSet(ListModelMixin, GenericViewSet):
     queryset: QuerySet[MenuItem] = MenuItem.objects.filter(parent__exact=None)
 
     def get_object(self):
-        obj: MenuItem = super(MenuItemViewSet, self).get_object()
+        obj: MenuItem = super().get_object()
         if obj.parent:
             raise Http404
         return obj
@@ -52,20 +59,22 @@ class WantToHelpViewSet(CreateModelMixin, GenericViewSet):
 
 @extend_schema_view(
     create=extend_schema(
-        description='Saves messages to database and sends email both to the one that submitted form and to the team\'s email',
-        summary='Send messages to Opportunity team',
+        description="Saves messages to database and sends email "
+        "both to the one that submitted form and to the team's email",
+        summary="Send messages to Opportunity team",
         auth=[],
         responses={
             status.HTTP_201_CREATED: ContactSerializer,
         },
-    ))
+    )
+)
 class ContactViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
-        res = super(ContactViewSet, self).create(request, *args, **kwargs)
+        res = super().create(request, *args, **kwargs)
         if res.status_code == 201 and not settings.DEBUG:
             email = res.data["email"]
             subject = res.data["subject"]
@@ -80,4 +89,4 @@ class ContactViewSet(CreateModelMixin, GenericViewSet):
 class SettingViewSet(ReadOnlyModelViewSet):
     serializer_class = SettingSerializer
     queryset = Setting.objects.all()
-    lookup_field = 'slug'
+    lookup_field = "slug"

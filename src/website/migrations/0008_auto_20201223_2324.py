@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('website', '0007_setting'),
+        ("website", "0007_setting"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='setting',
-            name='value',
-            field=models.TextField(blank=True, default='', max_length=300),
+            model_name="setting",
+            name="value",
+            field=models.TextField(blank=True, default="", max_length=300),
         ),
     ]

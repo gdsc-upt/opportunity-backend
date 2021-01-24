@@ -3,11 +3,11 @@ from django.contrib.admin import ModelAdmin
 
 
 class BaseModelAdmin(ModelAdmin):
-    readonly_fields = ('created', 'updated')
+    readonly_fields = ("created", "updated")
 
 
 class SlugableModelAdmin(ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}
+    prepopulated_fields = {"slug": ("name",)}
 
 
 # this function is meant to override default get_max_order if object is newly created
@@ -27,9 +27,13 @@ class SortableModelAdmin(SortableAdminMixin, ModelAdmin):
 
 
 CREATED_UPDATED = (
-    'Created/Updated', {
-        'classes': ('collapse',),
-        'fields': ('created', 'updated',),
-        'description': 'Info about the time this entry was added here or updated'
-    }
+    "Created/Updated",
+    {
+        "classes": ("collapse",),
+        "fields": (
+            "created",
+            "updated",
+        ),
+        "description": "Info about the time this entry was added here or updated",
+    },
 )
