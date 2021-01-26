@@ -11,7 +11,7 @@ from django.contrib.admin import (
 )
 from django.db.models import QuerySet, Q
 
-from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_UPDATED, SortableModelAdmin
+from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_MODIFIED, SortableModelAdmin
 from common.admin_site import admin_site
 from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact, Setting
 
@@ -31,10 +31,10 @@ class MenuItemsParentFilter(SimpleListFilter):
                 filters |= children_filter
         return filters
 
-    def queryset(self, request, queryset: QuerySet[MenuItem]):
+    def queryset(self, request, queryset: QuerySet[MenuItem]) -> QuerySet[MenuItem]:
         if self.value():
             return queryset.filter(self.get_children_filter())
-        return queryset.none()
+        return queryset
 
 
 class MenuItemInline(SortableInlineAdminMixin, TabularInline):
@@ -48,11 +48,9 @@ class MenuItemInline(SortableInlineAdminMixin, TabularInline):
 @register(MenuItem, site=admin_site)
 class MenuItemAdmin(SortableModelAdmin, ModelAdmin):
     inlines = (MenuItemInline,)
-
     list_display = ("name", "link", "type", "parent", "order_index")
     list_filter = (MenuItemsParentFilter, ("parent", EmptyFieldListFilter), "type")
     list_editable = ("parent", "type", "link")
-
     search_fields = ("name",)
     autocomplete_fields = ("parent",)
 
@@ -68,11 +66,12 @@ class CategoriesInline(TabularInline):
 @register(Newsletter, site=admin_site)
 class NewsletterAdmin(BaseModelAdmin):
     inlines = (CategoriesInline,)
-    fieldsets = ((None, {"fields": ("email", "categories", "other")}), CREATED_UPDATED)
+    fieldsets = ((None, {"fields": ("email", "categories", "other")}), CREATED_MODIFIED)
     filter_horizontal = ("categories",)
     list_display = ("email", "get_categories", "other", "created")
-    list_filter = ("categories", "created", "updated")
+    list_filter = ("categories", "created", "modified")
     search_fields = ("email", "categories__name", "other")
+    list_select_related = ("categories",)
 
     @staticmethod
     def get_categories(obj: Newsletter):
@@ -85,14 +84,14 @@ class NewsletterAdmin(BaseModelAdmin):
 @register(Partner, site=admin_site)
 class PartnerAdmin(BaseModelAdmin, SlugableModelAdmin):
     list_display = ("name", "slug", "website", "logo", "is_published")
-    list_filter = ("is_published", "created", "updated")
+    list_filter = ("is_published", "created", "modified")
     search_fields = ("name",)
 
 
 @register(Faq, site=admin_site)
 class FaqAdmin(BaseModelAdmin):
     list_display = ("question", "answer", "is_published")
-    list_filter = ("is_published", "created", "updated")
+    list_filter = ("is_published", "created", "modified")
     search_fields = ("question", "answer")
     list_editable = ("is_published",)
 
@@ -100,7 +99,7 @@ class FaqAdmin(BaseModelAdmin):
 @register(Article, site=admin_site)
 class ArticleAdmin(BaseModelAdmin, SlugableModelAdmin):
     list_display = ("name", "slug", "image", "description", "is_published", "created")
-    list_filter = ("is_published", "created", "updated")
+    list_filter = ("is_published", "created", "modified")
     search_fields = ("title",)
 
 
@@ -113,9 +112,9 @@ class WantToHelpAdmin(ModelAdmin):
 
 @register(Contact, site=admin_site)
 class ContactAdmin(BaseModelAdmin):
-    fieldsets = ((None, {"fields": ("name", "email", "subject", "message")}), CREATED_UPDATED)
+    fieldsets = ((None, {"fields": ("name", "email", "subject", "message")}), CREATED_MODIFIED)
     list_display = ("name", "email", "subject", "message")
-    list_filter = ("created", "updated")
+    list_filter = ("created", "modified")
     search_fields = ("name", "subject")
 
 
@@ -123,7 +122,7 @@ class ContactAdmin(BaseModelAdmin):
 class SettingAdmin(BaseModelAdmin):
     fieldsets = (
         (None, {"fields": ("slug", "description", "type", "value", "image")}),
-        CREATED_UPDATED,
+        CREATED_MODIFIED,
     )
     list_display = ("slug", "description", "type", "value", "image")
     search_fields = ("slug",)

@@ -3,7 +3,7 @@ from django.contrib.admin import ModelAdmin
 
 
 class BaseModelAdmin(ModelAdmin):
-    readonly_fields = ("created", "updated")
+    readonly_fields = ("created", "modified")
 
 
 class SlugableModelAdmin(ModelAdmin):
@@ -26,13 +26,13 @@ class SortableModelAdmin(SortableAdminMixin, ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-CREATED_UPDATED = (
-    "Created/Updated",
+CREATED_MODIFIED = (
+    "Created / Modified",
     {
         "classes": ("collapse",),
         "fields": (
             "created",
-            "updated",
+            "modified",
         ),
         "description": "Info about the time this entry was added here or updated",
     },

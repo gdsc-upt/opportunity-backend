@@ -52,7 +52,7 @@ class WantToHelpSerializer(ModelSerializer):
 class ContactSerializer(ModelSerializer):
     class Meta:
         model = Contact
-        exclude = "created", "updated", "id"
+        exclude = "created", "modified", "id"
 
 
 class SettingSerializer(ModelSerializer):

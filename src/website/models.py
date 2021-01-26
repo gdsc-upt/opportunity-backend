@@ -14,12 +14,14 @@ from django.db.models import (
 from django.utils.translation import gettext_lazy as _
 
 from administration.models import Category
-from common.models import SlugableModel, PublishableModel, CreatedUpdatedModel
+from common.models import SlugableModel, PublishableModel, BaseModel
 
 
-class Newsletter(CreatedUpdatedModel):
+class Newsletter(BaseModel):
     email = EmailField(max_length=250, unique=True)
-    categories = ManyToManyField(Category, blank=True)
+    categories = ManyToManyField(
+        Category, blank=True, related_name="newsletters", related_query_name="newsletter"
+    )
     other = CharField(
         max_length=500, blank=True, help_text=_("Other categories that are not listed above")
     )
@@ -27,23 +29,17 @@ class Newsletter(CreatedUpdatedModel):
     class Meta:
         db_table = "newsletters"
 
-    def __str__(self):
-        return str(self.email)
 
-
-class Partner(SlugableModel, PublishableModel, CreatedUpdatedModel):
+class Partner(SlugableModel, PublishableModel, BaseModel):
     name = CharField(max_length=100)
     website = URLField(blank=True, default=None)
     logo = ImageField(blank=True, default=None)
-
-    def __str__(self):
-        return str(self.name)
 
     class Meta:
         db_table = "partners"
 
 
-class Faq(PublishableModel, CreatedUpdatedModel):
+class Faq(PublishableModel, BaseModel):
     question = CharField(max_length=300)
     answer = TextField(max_length=1000)
 
@@ -54,7 +50,7 @@ class Faq(PublishableModel, CreatedUpdatedModel):
         db_table = "faqs"
 
 
-class MenuItem(Model):
+class MenuItem(BaseModel):
     TYPES = (
         ("ExternalLink", _("Link outside our domain (ex: google.com/milk)")),
         ("InternalLink", _("Link inside our domain (ex: /contact)")),
@@ -67,9 +63,6 @@ class MenuItem(Model):
         "MenuItem", on_delete=SET_NULL, blank=True, null=True, related_name="children"
     )
     order_index = PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
-
-    def __str__(self):
-        return str(self.name)
 
     # https://medium.com/@tnesztler/recursive-queries-as-querysets-for-parent-child-relationships-self-manytomany-in-django-671696dfe47
     def get_children(self, include_self=True):
@@ -89,13 +82,10 @@ class MenuItem(Model):
         ordering = ["order_index"]
 
 
-class Article(SlugableModel, PublishableModel, CreatedUpdatedModel):
+class Article(SlugableModel, PublishableModel, BaseModel):
     name = CharField(max_length=100)
     image = ImageField(blank=True, default=None)
     description = CharField(max_length=2000)
-
-    def __str__(self):
-        return str(self.name)
 
     class Meta:
         db_table = "articles"
@@ -112,29 +102,26 @@ class WantToHelp(Model):
         verbose_name_plural = _("want to help")
 
 
-class Contact(CreatedUpdatedModel):
+class Contact(BaseModel):
     name = CharField(max_length=200)
     email = EmailField(max_length=200)
     subject = CharField(max_length=300)
     message = TextField(max_length=2000)
 
-    def __str__(self):
-        return str(self.name)
-
     class Meta:
         db_table = "contacts"
 
 
-class Setting(SlugableModel, CreatedUpdatedModel):
+class Setting(SlugableModel, BaseModel):
     TYPES = (("TEXT", "Text"), ("IMAGE", "Image"))
 
-    description = TextField(max_length=250, blank=True, default="")
     type = CharField(max_length=5, choices=TYPES, default="TEXT")
-    value = TextField(max_length=300, blank=True, default="")
+    value = TextField(max_length=300, default="")
     image = ImageField(blank=True, default=None)
+    description = TextField(max_length=250, blank=True, default="")
 
     class Meta:
         db_table = "settings"
 
-    def str(self):
+    def __str__(self):
         return self.slug.replace("_", " ").capitalize()

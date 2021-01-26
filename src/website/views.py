@@ -39,7 +39,7 @@ class MenuItemViewSet(ListModelMixin, GenericViewSet):
     serializer_class = MenuItemSerializer
     queryset: QuerySet[MenuItem] = MenuItem.objects.filter(parent__exact=None)
 
-    def get_object(self):
+    def get_object(self) -> MenuItem:
         obj: MenuItem = super().get_object()
         if obj.parent:
             raise Http404

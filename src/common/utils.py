@@ -1,8 +1,6 @@
 import datetime
 from typing import AnyStr
 
-from django.contrib import messages
-
 
 def get_upload_path(instance, file_name) -> AnyStr:
     """
@@ -25,11 +23,3 @@ def get_upload_path(instance, file_name) -> AnyStr:
 
 def get_projects_file_path(instance, filename) -> AnyStr:
     return f"projects/{get_upload_path(instance, filename)}"
-
-
-def message_info(request, message):
-    messages.add_message(request, messages.INFO, message)
-
-
-def message_error(request, message):
-    messages.add_message(request, messages.ERROR, message)

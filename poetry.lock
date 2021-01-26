@@ -168,6 +168,17 @@ python-versions = ">=3.6"
 dev = ["pytest", "pytest-django", "pytest-cov", "django", "djangorestframework", "django-stubs (==1.5.0)", "djangorestframework-stubs (==1.2.0)", "flake8 (>=3.8)", "flake8-bugbear", "pre-commit", "isort (>=5.0)", "pdbpp", "tox"]
 
 [[package]]
+name = "django-model-utils"
+version = "4.1.1"
+description = "Django model mixins and utilities"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Django = ">=2.0.1"
+
+[[package]]
 name = "django-pwa"
 version = "1.0.10"
 description = "A Django app to include a manifest.json and Service Worker instance to enable progressive web app behavior"
@@ -425,7 +436,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "bd5de04be5a72280aec3caa56d0aa1142b5c54032f59ff0d2f2e35d2199f3960"
+content-hash = "38f636361c6fc4d456dde613f523336a01861c4ba40947c79ac3e074c7f6dfd6"
 
 [metadata.files]
 appdirs = [
@@ -479,6 +490,10 @@ django-debug-toolbar = [
 django-extra-checks = [
     {file = "django-extra-checks-0.8.0.tar.gz", hash = "sha256:25caa58baa557b4615af0363c14c340376a7cc08c41fbc2dbd35ff487e3282fe"},
     {file = "django_extra_checks-0.8.0-py3-none-any.whl", hash = "sha256:a37a4a9a22f2efa0e04a277b8d36e52f037a9e7edbcfcc2bb0860d608908d4c5"},
+]
+django-model-utils = [
+    {file = "django-model-utils-4.1.1.tar.gz", hash = "sha256:eb5dd05ef7d7ce6bc79cae54ea7c4a221f6f81e2aad7722933aee66489e7264b"},
+    {file = "django_model_utils-4.1.1-py3-none-any.whl", hash = "sha256:ef7c440024e797796a3811432abdd2be8b5225ae64ef346f8bfc6de7d8e5d73c"},
 ]
 django-pwa = [
     {file = "django-pwa-1.0.10.tar.gz", hash = "sha256:07ed9dd57108838e3fe44b551a82032ca4ed76e31cb3c3e8d51604e0fe7e81e9"},
