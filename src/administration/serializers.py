@@ -7,7 +7,7 @@ from administration.models import Organisation, Category, UserProfile, Opportuni
 class OpportunitySerializer(ModelSerializer):
     class Meta:
         model = Opportunity
-        exclude = ("updated",)
+        exclude = ("modified",)
         depth = 1
 
 
@@ -20,7 +20,7 @@ class OrganizationSerializer(ModelSerializer):
 class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
-        exclude = ("created", "updated")
+        exclude = ("created", "modified")
         depth = 1
 
 
