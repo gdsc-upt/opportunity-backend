@@ -76,10 +76,7 @@ class Opportunity(PublishableModel, SlugableModel, BaseModel):
 class Category(SlugableModel, BaseModel):
     name = CharField(max_length=225)
     opportunities = ManyToManyField(
-        Opportunity,
-        blank=True,
-        related_name="categories",
-        related_query_name="category"
+        Opportunity, blank=True, related_name="categories", related_query_name="category"
     )
 
     class Meta:

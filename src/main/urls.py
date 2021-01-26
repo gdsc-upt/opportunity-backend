@@ -4,10 +4,8 @@ from django.views.generic import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from administration.urls import router as admin_router
-from administration.views import CustomAuthToken, CreateUserView
 from website.urls import router as website_router
 from common.admin_site import admin_site
-
 
 urlpatterns = [
     path("", RedirectView.as_view(url="/api/admin/")),
@@ -15,10 +13,10 @@ urlpatterns = [
     path("api/admin/", admin_site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/swagger/", SpectacularSwaggerView.as_view(url_name="schema")),
+    path("api/auth/", include("dj_rest_auth.urls")),
+    path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
     path("api/", include(admin_router.urls)),
     path("api/", include(website_router.urls)),
-    path("api/auth/token/", CustomAuthToken.as_view()),
-    path("api/auth/register/", CreateUserView.as_view()),
 ]
 
 if settings.DEBUG:
