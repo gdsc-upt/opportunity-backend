@@ -14,7 +14,7 @@ from pathlib import Path
 
 from corsheaders.defaults import default_methods, default_headers
 from common.admin_site import admin_site
-from utils import Config
+from main.settings import Config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
