@@ -21,6 +21,7 @@ django-model-utils = "^4.1.1"
 djangorestframework-simplejwt = "^4.6.0"
 django-allauth = "^0.44.0"
 dj-rest-auth = {extras = ["with_social"], version = "^2.1.3"}
+django-jazzmin = "^2.4.4"
 
 [tool.poetry.dev-dependencies]
 pylint = "black"

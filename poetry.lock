@@ -253,6 +253,17 @@ python-versions = ">=3.6"
 dev = ["pytest", "pytest-django", "pytest-cov", "django", "djangorestframework", "django-stubs (==1.5.0)", "djangorestframework-stubs (==1.2.0)", "flake8 (>=3.8)", "flake8-bugbear", "pre-commit", "isort (>=5.0)", "pdbpp", "tox"]
 
 [[package]]
+name = "django-jazzmin"
+version = "2.4.4"
+description = "Drop-in theme for django admin, that utilises AdminLTE 3 & Bootstrap 4 to make yo' admin look jazzy"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+django = ">=2"
+
+[[package]]
 name = "django-model-utils"
 version = "4.1.1"
 description = "Django model mixins and utilities"
@@ -648,7 +659,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "eb29b8e856be9bb0bff864bcae8efdce060110426c924d1328a41c374b4cc7bb"
+content-hash = "effa7465ba81382753be222b03ae2d9cf8ea0e702534b6e92b871792d40239b9"
 
 [metadata.files]
 appdirs = [
@@ -774,6 +785,10 @@ django-debug-toolbar = [
 django-extra-checks = [
     {file = "django-extra-checks-0.8.0.tar.gz", hash = "sha256:25caa58baa557b4615af0363c14c340376a7cc08c41fbc2dbd35ff487e3282fe"},
     {file = "django_extra_checks-0.8.0-py3-none-any.whl", hash = "sha256:a37a4a9a22f2efa0e04a277b8d36e52f037a9e7edbcfcc2bb0860d608908d4c5"},
+]
+django-jazzmin = [
+    {file = "django-jazzmin-2.4.4.tar.gz", hash = "sha256:888a9a46612609dc60967147b1a0869675d600116793a98eece4cb0b3e7105ad"},
+    {file = "django_jazzmin-2.4.4-py3-none-any.whl", hash = "sha256:2f4bb114aaec46ddd54cdc3c19d9845778a38c72dd2e41e0c2177c783e718bba"},
 ]
 django-model-utils = [
     {file = "django-model-utils-4.1.1.tar.gz", hash = "sha256:eb5dd05ef7d7ce6bc79cae54ea7c4a221f6f81e2aad7722933aee66489e7264b"},
