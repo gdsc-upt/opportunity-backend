@@ -206,7 +206,7 @@ SPECTACULAR_SETTINGS = {
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "OpportUNITY Admin Page",
+    "site_title": "Opportunity Admin Page",
     # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Opportunity",
     # square logo to use for your site, must be present in static files, used for favicon and brand on top left
@@ -214,7 +214,7 @@ JAZZMIN_SETTINGS = {
     # Welcome text on the login screen
     "welcome_sign": "Welcome to Opportunity!",
     # Copyright on the footer
-    "copyright": "GDCS UPT & Liga AC",
+    "copyright": "Opportunity Team",
     # The model admin to search from the search bar, search bar omitted if excluded
     "search_model": "auth.User",
     # Field name on user model that contains avatar image
