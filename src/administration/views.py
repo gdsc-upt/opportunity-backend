@@ -18,6 +18,7 @@ from administration.serializers import (
         operation_id="Create new opportunity",
         description="Opportunities endpoint description",
         summary="Opportunities endpoint summary",
+        auth=None,
         responses={
             status.HTTP_200_OK: OpportunitySerializer,
         },
@@ -34,7 +35,7 @@ from administration.serializers import (
 class OpportunityViewSet(CreateModelMixin, ReadOnlyModelViewSet):
     serializer_class = OpportunitySerializer
     queryset = Opportunity.objects.filter(is_published=True)
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class OrganizationViewSet(ReadOnlyModelViewSet):

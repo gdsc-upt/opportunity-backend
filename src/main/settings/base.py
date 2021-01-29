@@ -305,11 +305,19 @@ JAZZMIN_SETTINGS = {
     },
 }
 
-
-MAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 DEFAULT_FROM_EMAIL = "testbackendemail001@gmail.com"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "testbackendemail001@gmail.com"
 EMAIL_HOST_PASSWORD = "Testemail001#"
 EMAIL_USE_TLS = True
+
+# DJANGO ALL AUTH SETTINGS
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
