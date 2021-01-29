@@ -210,7 +210,7 @@ JAZZMIN_SETTINGS = {
     # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Opportunity",
     # square logo to use for your site, must be present in static files, used for favicon and brand on top left
-    #"site_logo": "img/logo.png",
+    # "site_logo": "img/logo.png",
     # Welcome text on the login screen
     "welcome_sign": "Welcome to Opportunity!",
     # Copyright on the footer
@@ -224,29 +224,26 @@ JAZZMIN_SETTINGS = {
     ############
     # Links to put along the top menu
     "topmenu_links": [
-
         # Url that gets reversed (Permissions can be added)
-        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
         # external url that opens in a new window (Permissions can be added)
         {
-            'name': 'Swagger',
-            'url': '/api/swagger',
-            'new_window': True,
+            "name": "Swagger",
+            "url": "/api/swagger",
+            "new_window": True,
         },
         # model admin to link to (Permissions checked against model)
-        #{'model': 'administration.User'},
-        {'model': 'common.Example'},
+        # {'model': 'administration.User'},
+        {"model": "common.Example"},
         # App with dropdown menu to all its models pages (Permissions checked against models)
-        {'app': 'administration'},
-        {'app': 'common'},
+        {"app": "administration"},
+        {"app": "common"},
     ],
     #############
     # User Menu #
     ############
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
-    "usermenu_links": [
-        {"model": "administration.user"}
-    ],
+    "usermenu_links": [{"model": "administration.user"}],
     #############
     # Side Menu #
     #############
@@ -259,13 +256,12 @@ JAZZMIN_SETTINGS = {
     # Hide these models when generating side menu (e.g auth.user)
     "hide_models": [],
     # Custom links to append to app groups, keyed on app name
-    'custom_links': {
-        'administration': [
+    "custom_links": {
+        "administration": [
             {
-                'name': 'Make Messages',
-                'url': 'make_messages',
-                'icon': 'fas fa-comments',
-
+                "name": "Make Messages",
+                "url": "make_messages",
+                "icon": "fas fa-comments",
             }
         ]
     },
@@ -307,7 +303,6 @@ JAZZMIN_SETTINGS = {
         "administration.user": "collapsible",
         "auth.group": "vertical_tabs",
     },
-
 }
 
 
