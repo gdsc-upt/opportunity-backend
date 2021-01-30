@@ -9,13 +9,14 @@ from django.db.models import (
     ForeignKey,
     SET_NULL,
     PositiveIntegerField,
-    Q, TextChoices,
+    Q,
+    TextChoices,
 )
 from django.utils.translation import gettext_lazy as _
+from django.db.models.constraints import CheckConstraint
 
 from administration.models import Category
 from common.models import SlugableModel, PublishableModel, BaseModel
-from django.db.models.constraints import CheckConstraint
 
 from common.utils import get_upload_path
 
@@ -68,7 +69,12 @@ class MenuTypes(TextChoices):
 class MenuItem(BaseModel):
     name = CharField(_("name"), max_length=200)
     link = CharField(_("link"), max_length=1000)
-    type = CharField(_("type"), max_length=20, choices=MenuTypes.choices, default=MenuTypes.INTERNAL_LINK)
+    type = CharField(
+        _("type"),
+        max_length=20,
+        choices=MenuTypes.choices,
+        default=MenuTypes.INTERNAL_LINK,
+    )
     parent = ForeignKey(
         "MenuItem",
         verbose_name=_("parent"),
@@ -77,7 +83,9 @@ class MenuItem(BaseModel):
         null=True,
         related_name="children",
     )
-    order_index = PositiveIntegerField(_("order"), default=0, blank=False, db_index=True)
+    order_index = PositiveIntegerField(
+        _("order"), default=0, blank=False, db_index=True
+    )
 
     # https://medium.com/@tnesztler/recursive-queries-as-querysets-for-parent-child-relationships-self-manytomany-in-django-671696dfe47
     def get_children(self, include_self=True):
@@ -96,7 +104,9 @@ class MenuItem(BaseModel):
         db_table = "menu_items"
         ordering = ["order_index"]
         constraints = [
-            CheckConstraint(name="menuitem_type_valid", check=Q(type__in=MenuTypes.values))
+            CheckConstraint(
+                name="menuitem_type_valid", check=Q(type__in=MenuTypes.values)
+            )
         ]
 
 
@@ -136,7 +146,9 @@ class SettingTypes(TextChoices):
 
 
 class Setting(SlugableModel, BaseModel):
-    type = CharField(_("type"), max_length=5, choices=SettingTypes.choices, default=SettingTypes.TEXT)
+    type = CharField(
+        _("type"), max_length=5, choices=SettingTypes.choices, default=SettingTypes.TEXT
+    )
     value = TextField(_("value"), max_length=300, default="")
     image = ImageField(_("image"), blank=True, default=None, upload_to=get_upload_path)
     description = TextField(_("description"), max_length=250, blank=True, default="")
@@ -144,7 +156,9 @@ class Setting(SlugableModel, BaseModel):
     class Meta:
         db_table = "settings"
         constraints = [
-            CheckConstraint(name="setting_type_valid", check=(Q(type__in=SettingTypes.values)))
+            CheckConstraint(
+                name="setting_type_valid", check=(Q(type__in=SettingTypes.values))
+            )
         ]
 
     def __str__(self):

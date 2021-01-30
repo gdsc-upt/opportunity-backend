@@ -119,7 +119,8 @@ AUTH_USER_MODEL = "administration.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth"
+        ".password_validation.UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -204,11 +205,14 @@ SPECTACULAR_SETTINGS = {
 }
 
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    # title of the window
+    # (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Opportunity Admin Page",
-    # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Title on the brand, and login screen (19 chars max)
+    # (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Opportunity",
-    # square logo to use for your site, must be present in static files, used for favicon and brand on top left
+    # square logo to use for your site, must be present in static files,
+    # used for favicon and brand on top left
     # "site_logo": "img/logo.png",
     # Welcome text on the login screen
     "welcome_sign": "Welcome to Opportunity!",
@@ -234,14 +238,16 @@ JAZZMIN_SETTINGS = {
         # model admin to link to (Permissions checked against model)
         # {'model': 'administration.User'},
         {"model": "common.Example"},
-        # App with dropdown menu to all its models pages (Permissions checked against models)
+        # App with dropdown menu to all its models pages
+        # (Permissions checked against models)
         {"app": "administration"},
         {"app": "common"},
     ],
     #############
     # User Menu #
     ############
-    # Additional links to include in the user menu on the top right ("app" url type is not allowed)
+    # Additional links to include in the user menu on the top right
+    # ("app" url type is not allowed)
     "usermenu_links": [{"model": "administration.user"}],
     #############
     # Side Menu #
@@ -264,7 +270,8 @@ JAZZMIN_SETTINGS = {
             }
         ]
     },
-    # Custom icons for side menu apps/models See https://fontawesome.com/icons?d=gallery&m=free
+    # Custom icons for side menu apps/models
+    # See https://fontawesome.com/icons?d=gallery&m=free
     # for a list of icon classes
     "icons": {
         "auth": "fas fa-users-cog",

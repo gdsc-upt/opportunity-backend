@@ -16,17 +16,25 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.AutoField(
-                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
                     ),
                 ),
                 ("slug", models.SlugField(unique=True)),
                 ("created", models.DateTimeField(auto_now_add=True)),
                 ("updated", models.DateTimeField(auto_now=True)),
-                ("description", models.TextField(blank=True, default="", max_length=250)),
+                (
+                    "description",
+                    models.TextField(blank=True, default="", max_length=250),
+                ),
                 (
                     "type",
                     models.CharField(
-                        choices=[("TEXT", "Text"), ("IMAGE", "Image")], default="TEXT", max_length=5
+                        choices=[("TEXT", "Text"), ("IMAGE", "Image")],
+                        default="TEXT",
+                        max_length=5,
                     ),
                 ),
                 ("value", models.TextField(max_length=300)),

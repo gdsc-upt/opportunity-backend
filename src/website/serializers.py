@@ -2,7 +2,16 @@ from django.db.models import QuerySet
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from website.models import Faq, Partner, MenuItem, Article, Newsletter, WantToHelp, Contact, Setting
+from website.models import (
+    WantToHelp,
+    Faq,
+    Partner,
+    MenuItem,
+    Article,
+    Newsletter,
+    Contact,
+    Setting,
+)
 
 
 class NewsletterSerializer(ModelSerializer):

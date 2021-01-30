@@ -17,7 +17,9 @@ def get_upload_path(instance, file_name) -> AnyStr:
     model = instance.__class__._meta
     model_name = model.verbose_name_plural.replace(" ", "_")
     file_name, extension = file_name.rsplit(".", 1)
-    file_path = f"{model_name}/{file_name}_{str(datetime.datetime.now())[:19]}.{extension}"
+    file_path = (
+        f"{model_name}/{file_name}_{str(datetime.datetime.now())[:19]}.{extension}"
+    )
     return file_path
 
 

@@ -83,7 +83,10 @@ class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
 
 @register(Category, site=admin_site)
 class CategoryAdmin(BaseModelAdmin, SlugableModelAdmin):
-    fieldsets = ((None, {"fields": ("name", "slug", "opportunities")}), CREATED_MODIFIED)
+    fieldsets = (
+        (None, {"fields": ("name", "slug", "opportunities")}),
+        CREATED_MODIFIED,
+    )
     filter_horizontal = ("opportunities",)
     list_display = ("name", "slug", "created", "modified")
     list_filter = ("created", "modified")

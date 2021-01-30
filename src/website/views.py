@@ -7,7 +7,16 @@ from rest_framework import permissions, status
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 
-from website.models import Partner, Faq, MenuItem, Article, Newsletter, WantToHelp, Contact, Setting
+from website.models import (
+    Partner,
+    Faq,
+    Article,
+    Newsletter,
+    WantToHelp,
+    Contact,
+    Setting,
+    MenuItem,
+)
 from website.serializers import (
     PartnerSerializer,
     FaqSerializer,
@@ -80,9 +89,13 @@ class ContactViewSet(CreateModelMixin, GenericViewSet):
             subject = res.data["subject"]
             message = f"From: {res.data['name']}, {email}\n{res.data['message']}"
             send_mail(subject, message, None, ["mail1@mailinator.com"])
-            send_mail("Submit Opportunity", "Îţi mulţumim că ne-ai contactat!", None, [email])
+            send_mail(
+                "Submit Opportunity", "Îţi mulţumim că ne-ai contactat!", None, [email]
+            )
         if res.status_code == 201 and settings.DEBUG:
-            print(f"From: {res.data['name']}, {res.data['email']}\n{res.data['message']}")
+            print(
+                f"From: {res.data['name']}, {res.data['email']}\n{res.data['message']}"
+            )
         return res
 
 

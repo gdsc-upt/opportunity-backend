@@ -18,7 +18,6 @@ from administration.serializers import (
         operation_id="Create new opportunity",
         description="Opportunities endpoint description",
         summary="Opportunities endpoint summary",
-        auth=None,
         responses={
             status.HTTP_200_OK: OpportunitySerializer,
         },

@@ -30,42 +30,54 @@ class Migration(migrations.Migration):
             model_name="category",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="opportunity",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="organisation",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="userprofile",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AddField(
             model_name="userprofile",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AlterField(
             model_name="category",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(
@@ -82,7 +94,9 @@ class Migration(migrations.Migration):
             model_name="opportunity",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(
@@ -101,7 +115,9 @@ class Migration(migrations.Migration):
             model_name="organisation",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(

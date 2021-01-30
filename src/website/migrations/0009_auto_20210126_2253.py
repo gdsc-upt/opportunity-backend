@@ -41,77 +41,99 @@ class Migration(migrations.Migration):
             model_name="article",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="contact",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="faq",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="menuitem",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AddField(
             model_name="menuitem",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="newsletter",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="partner",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AddField(
             model_name="setting",
             name="modified",
             field=model_utils.fields.AutoLastModifiedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="modified"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
             ),
         ),
         migrations.AlterField(
             model_name="article",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(
             model_name="contact",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(
             model_name="faq",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(
@@ -128,21 +150,27 @@ class Migration(migrations.Migration):
             model_name="newsletter",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(
             model_name="partner",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(
             model_name="setting",
             name="created",
             field=model_utils.fields.AutoCreatedField(
-                default=django.utils.timezone.now, editable=False, verbose_name="created"
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
             ),
         ),
         migrations.AlterField(

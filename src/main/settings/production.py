@@ -29,8 +29,12 @@ PWA_APP_SCOPE = "/api/admin"
 PWA_APP_ORIENTATION = "any"
 PWA_APP_START_URL = "/api/admin"
 PWA_APP_STATUS_BAR_COLOR = "default"
-PWA_APP_ICONS = [{"src": "/api/static/images/opportunity-160x160.png", "sizes": "160x160"}]
-PWA_APP_ICONS_APPLE = [{"src": "/api/static/images/opportunity-160x160.png", "sizes": "160x160"}]
+PWA_APP_ICONS = [
+    {"src": "/api/static/images/opportunity-160x160.png", "sizes": "160x160"}
+]
+PWA_APP_ICONS_APPLE = [
+    {"src": "/api/static/images/opportunity-160x160.png", "sizes": "160x160"}
+]
 PWA_APP_SPLASH_SCREEN = [
     {
         "src": "/api/static/images/opportunity-1080x1080.png",
