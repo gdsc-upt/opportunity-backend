@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "website",
     "common",
     "rest_framework",
-    "rest_framework.authtoken",
     "drf_spectacular",
     "pwa",
     "corsheaders",
