@@ -17,10 +17,10 @@ from common.models import SlugableModel, PublishableModel, BaseModel
 
 
 class Organisation(SlugableModel, PublishableModel, BaseModel):
-    name = CharField(max_length=20)
-    website = URLField(blank=True, default=None)
-    description = TextField(max_length=300, blank=True)
-    location = CharField(max_length=40, blank=True)
+    name = CharField(_("name"), max_length=20)
+    website = URLField(_("website"), blank=True, default=None)
+    description = TextField(_("description"), max_length=300, blank=True)
+    location = CharField(_("location"), max_length=40, blank=True)
 
     def get_absolute_url(self):
         return f"/organisations/{self.slug}"
@@ -38,28 +38,34 @@ class User(AbstractUser):
 
 class UserProfile(BaseModel):
     user = OneToOneField(
-        User, on_delete=CASCADE, related_name="profile", related_query_name="profile"
+        User,
+        verbose_name=_("user"),
+        on_delete=CASCADE,
+        related_name="profile",
+        related_query_name="profile",
     )
     organisation = ForeignKey(
         Organisation,
+        verbose_name=_("organisation"),
         on_delete=SET_NULL,
         null=True,
         related_name="profiles",
         related_query_name="profile",
     )
-    description = TextField(max_length=300)
+    description = TextField(_("description"), max_length=300)
 
     class Meta:
         db_table = "user_profiles"
 
 
 class Opportunity(PublishableModel, SlugableModel, BaseModel):
-    name = CharField(max_length=50)
-    url = URLField(blank=True, default=None)
-    description = TextField(max_length=300)
-    deadline = DateTimeField()
+    name = CharField(_("name"), max_length=50)
+    url = URLField(_("url"), blank=True, default=None)
+    description = TextField(_("description"), max_length=300)
+    deadline = DateTimeField(_("deadline"))
     organisation = ForeignKey(
         Organisation,
+        verbose_name=_("organisation"),
         on_delete=CASCADE,
         blank=True,
         null=True,
@@ -74,9 +80,13 @@ class Opportunity(PublishableModel, SlugableModel, BaseModel):
 
 
 class Category(SlugableModel, BaseModel):
-    name = CharField(max_length=225)
+    name = CharField(_("name"), max_length=225)
     opportunities = ManyToManyField(
-        Opportunity, blank=True, related_name="categories", related_query_name="category"
+        Opportunity,
+        verbose_name=_("opportunities"),
+        blank=True,
+        related_name="categories",
+        related_query_name="category",
     )
 
     class Meta:

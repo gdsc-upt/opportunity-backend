@@ -9,21 +9,31 @@ from django.db.models import (
     ForeignKey,
     SET_NULL,
     PositiveIntegerField,
-    Q,
+    Q, TextChoices,
 )
 from django.utils.translation import gettext_lazy as _
 
 from administration.models import Category
 from common.models import SlugableModel, PublishableModel, BaseModel
+from django.db.models.constraints import CheckConstraint
+
+from common.utils import get_upload_path
 
 
 class Newsletter(BaseModel):
-    email = EmailField(max_length=250, unique=True)
+    email = EmailField(_("email"), max_length=250, unique=True)
     categories = ManyToManyField(
-        Category, blank=True, related_name="newsletters", related_query_name="newsletter"
+        Category,
+        verbose_name=_("categories"),
+        blank=True,
+        related_name="newsletters",
+        related_query_name="newsletter",
     )
     other = CharField(
-        max_length=500, blank=True, help_text=_("Other categories that are not listed above")
+        max_length=500,
+        verbose_name=_("other"),
+        blank=True,
+        help_text=_("Other categories that are not listed above"),
     )
 
     class Meta:
@@ -31,17 +41,17 @@ class Newsletter(BaseModel):
 
 
 class Partner(SlugableModel, PublishableModel, BaseModel):
-    name = CharField(max_length=100)
-    website = URLField(blank=True, default=None)
-    logo = ImageField(blank=True, default=None)
+    name = CharField(_("name"), max_length=100)
+    website = URLField(_("website"), blank=True, default=None)
+    logo = ImageField(_("logo"), blank=True, default=None, upload_to=get_upload_path)
 
     class Meta:
         db_table = "partners"
 
 
 class Faq(PublishableModel, BaseModel):
-    question = CharField(max_length=300)
-    answer = TextField(max_length=1000)
+    question = CharField(_("question"), max_length=300)
+    answer = TextField(_("answer"), max_length=1000)
 
     def __str__(self):
         return str(self.question)
@@ -50,19 +60,24 @@ class Faq(PublishableModel, BaseModel):
         db_table = "faqs"
 
 
-class MenuItem(BaseModel):
-    TYPES = (
-        ("ExternalLink", _("Link outside our domain (ex: google.com/milk)")),
-        ("InternalLink", _("Link inside our domain (ex: /contact)")),
-    )
+class MenuTypes(TextChoices):
+    EXTERNAL_LINK = "ExternalLink", _("Link outside our domain (ex: google.com/milk)")
+    INTERNAL_LINK = "InternalLink", _("Link inside our domain (ex: /contact)")
 
-    name = CharField(max_length=200)
-    link = CharField(max_length=1000)
-    type = CharField(max_length=20, choices=TYPES, default="InternalLink")
+
+class MenuItem(BaseModel):
+    name = CharField(_("name"), max_length=200)
+    link = CharField(_("link"), max_length=1000)
+    type = CharField(_("type"), max_length=20, choices=MenuTypes.choices, default=MenuTypes.INTERNAL_LINK)
     parent = ForeignKey(
-        "MenuItem", on_delete=SET_NULL, blank=True, null=True, related_name="children"
+        "MenuItem",
+        verbose_name=_("parent"),
+        on_delete=SET_NULL,
+        blank=True,
+        null=True,
+        related_name="children",
     )
-    order_index = PositiveIntegerField(default=0, blank=False, null=False, db_index=True)
+    order_index = PositiveIntegerField(_("order"), default=0, blank=False, db_index=True)
 
     # https://medium.com/@tnesztler/recursive-queries-as-querysets-for-parent-child-relationships-self-manytomany-in-django-671696dfe47
     def get_children(self, include_self=True):
@@ -80,21 +95,24 @@ class MenuItem(BaseModel):
     class Meta:
         db_table = "menu_items"
         ordering = ["order_index"]
+        constraints = [
+            CheckConstraint(name="menuitem_type_valid", check=Q(type__in=MenuTypes.values))
+        ]
 
 
 class Article(SlugableModel, PublishableModel, BaseModel):
-    name = CharField(max_length=100)
-    image = ImageField(blank=True, default=None)
-    description = CharField(max_length=2000)
+    name = CharField(_("name"), max_length=100)
+    image = ImageField(_("image"), blank=True, default=None, upload_to=get_upload_path)
+    description = CharField(_("description"), max_length=2000)
 
     class Meta:
         db_table = "articles"
 
 
 class WantToHelp(Model):
-    name = CharField(max_length=225)
-    email = EmailField(max_length=255)
-    description = TextField()
+    name = CharField(_("name"), max_length=225)
+    email = EmailField(_("email"), max_length=255)
+    description = TextField(_("description"))
 
     class Meta:
         db_table = "want_to_help"
@@ -103,25 +121,31 @@ class WantToHelp(Model):
 
 
 class Contact(BaseModel):
-    name = CharField(max_length=200)
-    email = EmailField(max_length=200)
-    subject = CharField(max_length=300)
-    message = TextField(max_length=2000)
+    name = CharField(_("name"), max_length=200)
+    email = EmailField(_("email"), max_length=200)
+    subject = CharField(_("subject"), max_length=300)
+    message = TextField(_("message"), max_length=2000)
 
     class Meta:
         db_table = "contacts"
 
 
-class Setting(SlugableModel, BaseModel):
-    TYPES = (("TEXT", "Text"), ("IMAGE", "Image"))
+class SettingTypes(TextChoices):
+    TEXT = "TEXT", _("Text")
+    IMAGE = "IMAGE", _("Image")
 
-    type = CharField(max_length=5, choices=TYPES, default="TEXT")
-    value = TextField(max_length=300, default="")
-    image = ImageField(blank=True, default=None)
-    description = TextField(max_length=250, blank=True, default="")
+
+class Setting(SlugableModel, BaseModel):
+    type = CharField(_("type"), max_length=5, choices=SettingTypes.choices, default=SettingTypes.TEXT)
+    value = TextField(_("value"), max_length=300, default="")
+    image = ImageField(_("image"), blank=True, default=None, upload_to=get_upload_path)
+    description = TextField(_("description"), max_length=250, blank=True, default="")
 
     class Meta:
         db_table = "settings"
+        constraints = [
+            CheckConstraint(name="setting_type_valid", check=(Q(type__in=SettingTypes.values)))
+        ]
 
     def __str__(self):
         return self.slug.replace("_", " ").capitalize()

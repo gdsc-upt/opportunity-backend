@@ -17,12 +17,12 @@ urlpatterns = [
     path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
     path("api/", include(admin_router.urls)),
     path("api/", include(website_router.urls)),
-
     # these 2 are necessary because django allauth tries accesing them using reverse url's
-    path('dummy/', TemplateView.as_view(), name='account_email_verification_sent'),
+    path("dummy/", TemplateView.as_view(), name="account_email_verification_sent"),
     path(
-        'api/auth/password/reset/confirm/<slug:uidb64>/<slug:token>/',
-        TemplateView.as_view(), name='password_reset_confirm'
+        "api/auth/password/reset/confirm/<slug:uidb64>/<slug:token>/",
+        TemplateView.as_view(),
+        name="password_reset_confirm",
     ),
 ]
 
