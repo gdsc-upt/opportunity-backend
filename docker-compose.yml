@@ -13,13 +13,8 @@ services:
       postgresdb:
         aliases:
           - backend
-      web:
-        aliases:
-          - backend
 
 networks:
-  web:
-    external: true
   postgresdb:
     external:
       name: pdb

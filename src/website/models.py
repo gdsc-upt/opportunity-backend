@@ -10,7 +10,6 @@ from django.db.models import (
     SET_NULL,
     PositiveIntegerField,
     Q,
-    TextChoices,
 )
 from django.utils.translation import gettext_lazy as _
 from django.db.models.constraints import CheckConstraint
@@ -19,6 +18,7 @@ from administration.models import Category
 from common.models import SlugableModel, PublishableModel, BaseModel
 
 from common.utils import get_upload_path
+from website.constants import MenuTypes, SettingTypes
 
 
 class Newsletter(BaseModel):
@@ -31,8 +31,8 @@ class Newsletter(BaseModel):
         related_query_name="newsletter",
     )
     other = CharField(
+        _("other"),
         max_length=500,
-        verbose_name=_("other"),
         blank=True,
         help_text=_("Other categories that are not listed above"),
     )
@@ -61,11 +61,6 @@ class Faq(PublishableModel, BaseModel):
         db_table = "faqs"
 
 
-class MenuTypes(TextChoices):
-    EXTERNAL_LINK = "ExternalLink", _("Link outside our domain (ex: google.com/milk)")
-    INTERNAL_LINK = "InternalLink", _("Link inside our domain (ex: /contact)")
-
-
 class MenuItem(BaseModel):
     name = CharField(_("name"), max_length=200)
     link = CharField(_("link"), max_length=1000)
@@ -83,9 +78,7 @@ class MenuItem(BaseModel):
         null=True,
         related_name="children",
     )
-    order_index = PositiveIntegerField(
-        _("order"), default=0, blank=False, db_index=True
-    )
+    order_index = PositiveIntegerField(_("order"), default=0, db_index=True)
 
     # https://medium.com/@tnesztler/recursive-queries-as-querysets-for-parent-child-relationships-self-manytomany-in-django-671696dfe47
     def get_children(self, include_self=True):
@@ -138,11 +131,6 @@ class Contact(BaseModel):
 
     class Meta:
         db_table = "contacts"
-
-
-class SettingTypes(TextChoices):
-    TEXT = "TEXT", _("Text")
-    IMAGE = "IMAGE", _("Image")
 
 
 class Setting(SlugableModel, BaseModel):

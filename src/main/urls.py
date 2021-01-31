@@ -9,7 +9,6 @@ from common.admin_site import admin_site
 
 urlpatterns = [
     path("", RedirectView.as_view(url="/api/admin/")),
-    path("", include("pwa.urls")),
     path("api/admin/", admin_site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/swagger/", SpectacularSwaggerView.as_view(url_name="schema")),
