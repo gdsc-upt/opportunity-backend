@@ -46,6 +46,7 @@ class FaqViewSet(ReadOnlyModelViewSet):
 
 class MenuItemViewSet(ListModelMixin, GenericViewSet):
     serializer_class = MenuItemSerializer
+    permission_classes = [permissions.AllowAny]
     queryset: QuerySet[MenuItem] = MenuItem.objects.filter(parent__exact=None)
 
     def get_object(self) -> MenuItem:
