@@ -17,7 +17,7 @@ from common.admin import (
     CREATED_MODIFIED,
     SortableModelAdmin,
 )
-from common.admin_site import admin_site
+
 from website.models import (
     WantToHelp,
     Partner,
@@ -59,7 +59,7 @@ class MenuItemInline(SortableInlineAdminMixin, TabularInline):
     verbose_name_plural = "Children"
 
 
-@register(MenuItem, site=admin_site)
+@register(MenuItem)
 class MenuItemAdmin(SortableModelAdmin, ModelAdmin):
     inlines = (MenuItemInline,)
     list_display = ("name", "link", "type", "parent", "order_index")
@@ -77,7 +77,7 @@ class CategoriesInline(TabularInline):
     verbose_name_plural = "categories"
 
 
-@register(Newsletter, site=admin_site)
+@register(Newsletter)
 class NewsletterAdmin(BaseModelAdmin):
     inlines = (CategoriesInline,)
     fieldsets = ((None, {"fields": ("email", "categories", "other")}), CREATED_MODIFIED)
@@ -95,14 +95,14 @@ class NewsletterAdmin(BaseModelAdmin):
 
 
 @admin_thumbnails.thumbnail("logo", background=True)
-@register(Partner, site=admin_site)
+@register(Partner)
 class PartnerAdmin(BaseModelAdmin, SlugableModelAdmin):
     list_display = ("name", "slug", "website", "logo", "is_published")
     list_filter = ("is_published", "created", "modified")
     search_fields = ("name",)
 
 
-@register(Faq, site=admin_site)
+@register(Faq)
 class FaqAdmin(BaseModelAdmin):
     list_display = ("question", "answer", "is_published")
     list_filter = ("is_published", "created", "modified")
@@ -110,21 +110,21 @@ class FaqAdmin(BaseModelAdmin):
     list_editable = ("is_published",)
 
 
-@register(Article, site=admin_site)
+@register(Article)
 class ArticleAdmin(BaseModelAdmin, SlugableModelAdmin):
     list_display = ("name", "slug", "image", "description", "is_published", "created")
     list_filter = ("is_published", "created", "modified")
     search_fields = ("title",)
 
 
-@register(WantToHelp, site=admin_site)
+@register(WantToHelp)
 class WantToHelpAdmin(ModelAdmin):
     list_display = ("name", "email")
     list_filter = ("name", "email")
     search_fields = ("email",)
 
 
-@register(Contact, site=admin_site)
+@register(Contact)
 class ContactAdmin(BaseModelAdmin):
     fieldsets = (
         (None, {"fields": ("name", "email", "subject", "message")}),
@@ -135,7 +135,7 @@ class ContactAdmin(BaseModelAdmin):
     search_fields = ("name", "subject")
 
 
-@register(Setting, site=admin_site)
+@register(Setting)
 class SettingAdmin(BaseModelAdmin):
     fieldsets = (
         (None, {"fields": ("slug", "description", "type", "value", "image")}),

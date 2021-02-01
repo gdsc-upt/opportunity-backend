@@ -1,21 +1,19 @@
 from typing import Optional
 
 from django.contrib.admin import register, ModelAdmin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, GroupAdmin
-from django.contrib.auth.models import Group
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
 
 from administration.models import User, Organisation, Opportunity, Category, UserProfile
 from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_MODIFIED
-from common.admin_site import admin_site
 
 
-@register(User, site=admin_site)
+@register(User)
 class UserAdmin(BaseUserAdmin):
     search_fields = ("username", "email", "first_name", "last_name")
 
 
-@register(UserProfile, site=admin_site)
+@register(UserProfile)
 class UserProfileAdmin(ModelAdmin):
     list_display = ("user", "organisation", "description")
     list_filter = ("organisation",)
@@ -23,17 +21,12 @@ class UserProfileAdmin(ModelAdmin):
     autocomplete_fields = ("user", "organisation")
 
 
-@register(Group, site=admin_site)
-class CustomGroupAdmin(GroupAdmin):
-    pass
-
-
-@register(Organisation, site=admin_site)
+@register(Organisation)
 class OrganisationAdmin(BaseModelAdmin, SlugableModelAdmin):
     search_fields = ("name",)
 
 
-@register(Opportunity, site=admin_site)
+@register(Opportunity)
 class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
     fieldsets = (
         (
@@ -81,7 +74,7 @@ class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
     show_org_url.short_description = "organisation"
 
 
-@register(Category, site=admin_site)
+@register(Category)
 class CategoryAdmin(BaseModelAdmin, SlugableModelAdmin):
     fieldsets = (
         (None, {"fields": ("name", "slug", "opportunities")}),

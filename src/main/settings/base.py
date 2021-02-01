@@ -2,7 +2,9 @@ import os
 from pathlib import Path
 
 from corsheaders.defaults import default_methods, default_headers
-from common.admin_site import admin_site
+
+from django.contrib.admin import AdminSite
+
 from main.settings import Config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -12,8 +14,8 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 CONFIG_FILE = os.path.join(BASE_DIR, "..", "config.yml")
 config = Config(CONFIG_FILE)
 
-admin_site.site_title = config.get("SITE_TITLE", "Django Template Project")
-admin_site.site_header = config.get("SITE_HEADER", "Django Template Project")
+AdminSite.site_title = config.get("SITE_TITLE", "Django Template Project")
+AdminSite.site_header = config.get("SITE_HEADER", "Django Template Project")
 SECRET_KEY = config.get("SECRET_KEY", raise_error=True)
 DEBUG = config.get("DEBUG", False, cast=bool)
 ALLOWED_HOSTS = config.get("ALLOWED_HOSTS", cast=list)
@@ -172,7 +174,7 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_FAVICON_HREF": "//unpkg.com/swagger-ui-dist@3.35.1/favicon-32x32.png",
     # General schema metadata. Refer to spec for valid inputs
     # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#openapi-object
-    "TITLE": admin_site.site_title + " API",
+    "TITLE": AdminSite.site_title + " API",
     "DESCRIPTION": "API Description",
     "TOS": None,
     # Optional: MAY contain 'name', 'url', 'email'

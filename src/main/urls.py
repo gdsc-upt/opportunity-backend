@@ -1,15 +1,15 @@
 from django.conf import settings
+from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView, TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from administration.urls import router as admin_router
 from website.urls import router as website_router
-from common.admin_site import admin_site
 
 urlpatterns = [
     path("", RedirectView.as_view(url="/api/admin/")),
-    path("api/admin/", admin_site.urls),
+    path("api/admin/", admin.site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/swagger/", SpectacularSwaggerView.as_view(url_name="schema")),
     path("api/auth/", include("dj_rest_auth.urls")),
