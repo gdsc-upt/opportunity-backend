@@ -16,3 +16,4 @@ setup.sh
 data.json
 database
 media-local
+Makefile
