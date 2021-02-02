@@ -11,6 +11,7 @@ from django.db.models import (
     CASCADE,
     ManyToManyField,
     OneToOneField,
+    BooleanField,
 )
 from django.utils.translation import gettext_lazy as _
 
@@ -32,6 +33,7 @@ class Organisation(SlugableModel, PublishableModel, BaseModel):
 
 class User(AbstractUser):
     email = EmailField(_("email address"), unique=True)
+    is_email_confirmed = BooleanField(_("email confirmed"))
 
     class Meta:
         db_table = "auth_user"

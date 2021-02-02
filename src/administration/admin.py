@@ -3,6 +3,7 @@ from typing import Optional
 from django.contrib.admin import register, ModelAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from administration.models import User, Organisation, Opportunity, Category, UserProfile
 from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_MODIFIED
@@ -10,6 +11,26 @@ from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_MODIFIED
 
 @register(User)
 class UserAdmin(BaseUserAdmin):
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (
+            _("Personal info"),
+            {"fields": ("first_name", "last_name", "email", "is_email_confirmed")},
+        ),
+        (
+            _("Permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
+        ),
+        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+    )
     search_fields = ("username", "email", "first_name", "last_name")
 
 
