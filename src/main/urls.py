@@ -13,7 +13,7 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/swagger/", SpectacularSwaggerView.as_view(url_name="schema")),
     path("api/auth/", include("authentication.urls")),
-    path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("api/auth/registration/", include("authentication.registration.urls")),
     path("api/", include(admin_router.urls)),
     path("api/", include(website_router.urls)),
     # these 2 are necessary because django allauth
