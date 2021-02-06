@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.utils import timezone
@@ -15,6 +14,7 @@ from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from administration.models import User
 from .serializers import (
     LoginSerializer,
     JWTSerializerWithExpiration,
@@ -34,16 +34,6 @@ sensitive_post_parameters_m = method_decorator(
 
 
 class LoginView(GenericAPIView):
-    """
-    Check the credentials and return the REST Token
-    if the credentials are valid and authenticated.
-    Calls Django Auth login method to register User ID
-    in Django session framework
-
-    Accept the following POST parameters: username, password
-    Return the REST Framework Token Object's key.
-    """
-
     permission_classes = (AllowAny,)
     serializer_class = LoginSerializer
     throttle_scope = "auth"
@@ -52,10 +42,8 @@ class LoginView(GenericAPIView):
     def dispatch(self, *args, **kwargs):
         return super(LoginView, self).dispatch(*args, **kwargs)
 
-    def process_login(self):
-        django_login(self.request, self.user)
-
-    def get_response_serializer(self):
+    @staticmethod
+    def get_response_serializer():
         if getattr(settings, "JWT_AUTH_RETURN_EXPIRATION", False):
             response_serializer = JWTSerializerWithExpiration
         else:
@@ -65,15 +53,11 @@ class LoginView(GenericAPIView):
     def login(self):
         self.user = self.serializer.validated_data["user"]
         self.access_token, self.refresh_token = jwt_encode(self.user)
-
-        if getattr(settings, "REST_SESSION_LOGIN", True):
-            self.process_login()
+        django_login(self.request, self.user)
 
     def get_response(self):
         serializer_class = self.get_response_serializer()
 
-        access_token_expiration = timezone.now() + jwt_settings.ACCESS_TOKEN_LIFETIME
-        refresh_token_expiration = timezone.now() + jwt_settings.REFRESH_TOKEN_LIFETIME
         return_expiration_times = getattr(settings, "JWT_AUTH_RETURN_EXPIRATION", False)
         data = {
             "user": self.user,
@@ -81,6 +65,12 @@ class LoginView(GenericAPIView):
             "refresh_token": self.refresh_token,
         }
         if return_expiration_times:
+            access_token_expiration = (
+                timezone.now() + jwt_settings.ACCESS_TOKEN_LIFETIME
+            )
+            refresh_token_expiration = (
+                timezone.now() + jwt_settings.REFRESH_TOKEN_LIFETIME
+            )
             data["access_token_expiration"] = access_token_expiration
             data["refresh_token_expiration"] = refresh_token_expiration
 
@@ -88,33 +78,7 @@ class LoginView(GenericAPIView):
             instance=data, context=self.get_serializer_context()
         )
 
-        response = Response(serializer.data, status=status.HTTP_200_OK)
-        # cookie_name = getattr(settings, "JWT_AUTH_COOKIE", None)
-        # refresh_cookie_name = getattr(settings, "JWT_AUTH_REFRESH_COOKIE", None)
-        # refresh_cookie_path = getattr(settings, "JWT_AUTH_REFRESH_COOKIE_PATH", "/")
-        # cookie_secure = getattr(settings, "JWT_AUTH_SECURE", False)
-        # cookie_httponly = getattr(settings, "JWT_AUTH_HTTPONLY", True)
-        # cookie_samesite = getattr(settings, "JWT_AUTH_SAMESITE", "Lax")
-        # if cookie_name:
-        #     response.set_cookie(
-        #         cookie_name,
-        #         self.access_token,
-        #         expires=access_token_expiration,
-        #         secure=cookie_secure,
-        #         httponly=cookie_httponly,
-        #         samesite=cookie_samesite,
-        #     )
-        # if refresh_cookie_name:
-        #     response.set_cookie(
-        #         refresh_cookie_name,
-        #         self.refresh_token,
-        #         expires=refresh_token_expiration,
-        #         secure=cookie_secure,
-        #         httponly=cookie_httponly,
-        #         samesite=cookie_samesite,
-        #         path=refresh_cookie_path,
-        #     )
-        return response
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         self.request = request
@@ -126,13 +90,6 @@ class LoginView(GenericAPIView):
 
 
 class LogoutView(APIView):
-    """
-    Calls Django logout method and delete the Token object
-    assigned to the current User object.
-
-    Accepts/Returns nothing.
-    """
-
     throttle_scope = "auth"
 
     def post(self, request, *args, **kwargs):
@@ -142,32 +99,6 @@ class LogoutView(APIView):
         response = Response(
             {"detail": _("Successfully logged out.")}, status=status.HTTP_200_OK
         )
-
-        # cookie_name = getattr(settings, "JWT_AUTH_COOKIE", None)
-        # refresh_cookie_name = getattr(settings, "JWT_AUTH_REFRESH_COOKIE", None)
-        # refresh_cookie_path = getattr(settings, "JWT_AUTH_REFRESH_COOKIE_PATH", "/")
-        # cookie_secure = getattr(settings, "JWT_AUTH_SECURE", False)
-        # cookie_httponly = getattr(settings, "JWT_AUTH_HTTPONLY", True)
-        # cookie_samesite = getattr(settings, "JWT_AUTH_SAMESITE", "Lax")
-        # if cookie_name:
-        #     response.set_cookie(
-        #         cookie_name,
-        #         max_age=0,
-        #         expires="Thu, 01 Jan 1970 00:00:00 GMT",
-        #         secure=cookie_secure,
-        #         httponly=cookie_httponly,
-        #         samesite=cookie_samesite,
-        #     )
-        # if refresh_cookie_name:
-        #     response.set_cookie(
-        #         refresh_cookie_name,
-        #         max_age=0,
-        #         expires="Thu, 01 Jan 1970 00:00:00 GMT",
-        #         secure=cookie_secure,
-        #         httponly=cookie_httponly,
-        #         samesite=cookie_samesite,
-        #         path=refresh_cookie_path,
-        #     )
 
         if "rest_framework_simplejwt.token_blacklist" in settings.INSTALLED_APPS:
             # add refresh token to blacklist
@@ -193,29 +124,10 @@ class LogoutView(APIView):
                 else:
                     response.data = {"detail": _("An error has occurred.")}
                     response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-
-        # elif not cookie_name:
-        #     message = _(
-        #         "Neither cookies or blacklist are enabled, so the token "
-        #         "has not been deleted server side. Please make sure the token is deleted client side."
-        #     )
-        #     response.data = {"detail": message}
-        #     response.status_code = status.HTTP_200_OK
         return response
 
 
 class UserDetailsView(RetrieveUpdateAPIView):
-    """
-    Reads and updates UserModel fields
-    Accepts GET, PUT, PATCH methods.
-
-    Default accepted fields: username, first_name, last_name
-    Default display fields: pk, username, email, first_name, last_name
-    Read-only fields: pk, email
-
-    Returns UserModel fields.
-    """
-
     serializer_class = UserDetailsSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -223,21 +135,10 @@ class UserDetailsView(RetrieveUpdateAPIView):
         return self.request.user
 
     def get_queryset(self):
-        """
-        Adding this method since it is sometimes called when using
-        django-rest-swagger
-        """
-        return get_user_model().objects.none()
+        return User.objects.none()
 
 
 class PasswordResetView(GenericAPIView):
-    """
-    Calls Django Auth PasswordResetForm save method.
-
-    Accepts the following POST parameters: email
-    Returns the success/fail message.
-    """
-
     serializer_class = PasswordResetSerializer
     permission_classes = (AllowAny,)
     throttle_scope = "auth"
@@ -253,15 +154,6 @@ class PasswordResetView(GenericAPIView):
 
 
 class PasswordResetConfirmView(GenericAPIView):
-    """
-    Password reset e-mail link is confirmed, therefore
-    this resets the user's password.
-
-    Accepts the following POST parameters: token, uid,
-        new_password1, new_password2
-    Returns the success/fail message.
-    """
-
     serializer_class = PasswordResetConfirmSerializer
     permission_classes = (AllowAny,)
     throttle_scope = "auth"
@@ -278,13 +170,6 @@ class PasswordResetConfirmView(GenericAPIView):
 
 
 class PasswordChangeView(GenericAPIView):
-    """
-    Calls Django Auth SetPasswordForm save method.
-
-    Accepts the following POST parameters: new_password1, new_password2
-    Returns the success/fail message.
-    """
-
     serializer_class = PasswordChangeSerializer
     permission_classes = (IsAuthenticated,)
     throttle_scope = "auth"

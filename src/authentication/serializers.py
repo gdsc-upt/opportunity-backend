@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_str
@@ -8,22 +8,15 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.fields import empty
+from rest_framework.serializers import Serializer, ModelSerializer
 
-# Get the UserModel
-UserModel = get_user_model()
+from administration.models import User
 
 
-class LoginSerializer(serializers.Serializer):
+class LoginSerializer(Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
-
-    def validate_user_is_active(self, user):
-        if not user.is_active:
-            raise ValidationError(_("User account is disabled."))
-
-    def validate_email_verification_status(self, user):
-        if not user.is_email_confirmed:
-            raise ValidationError(_("E-mail is not verified."))
 
     def validate(self, attrs):
         email = attrs.get("email")
@@ -33,20 +26,23 @@ class LoginSerializer(serializers.Serializer):
         if not user:
             raise ValidationError(_("Unable to log in with provided credentials."))
 
-        self.validate_user_is_active(user)
-        self.validate_email_verification_status(user)
+        errors = []
+        if not user.is_active:
+            errors.append(ValidationError(_("User account is disabled.")))
+        if not user.is_email_confirmed:
+            errors.append(ValidationError(_("E-mail is not verified.")))
 
         attrs["user"] = user
         return attrs
 
 
-class UserDetailsSerializer(serializers.ModelSerializer):
+class UserDetailsSerializer(ModelSerializer):
     class Meta:
-        model = UserModel
+        model = User
         fields = ("id", "email", "first_name", "last_name")
 
 
-class JWTSerializer(serializers.Serializer):
+class JWTSerializer(Serializer):
     """
     Serializer for JWT authentication.
     """
@@ -60,32 +56,20 @@ class JWTSerializer(serializers.Serializer):
 
 
 class JWTSerializerWithExpiration(JWTSerializer):
-    """
-    Serializer for JWT authentication with expiration times.
-    """
-
     access_token_expiration = serializers.DateTimeField()
     refresh_token_expiration = serializers.DateTimeField()
 
 
-class PasswordResetSerializer(serializers.Serializer):
-    """
-    Serializer for requesting a password reset e-mail.
-    """
-
+class PasswordResetSerializer(Serializer):
     email = serializers.EmailField()
 
     password_reset_form_class = PasswordResetForm
-
-    def get_email_options(self):
-        """Override this method to change default e-mail options"""
-        return {}
 
     def validate_email(self, value):
         # Create PasswordResetForm with the serializer
         self.reset_form = self.password_reset_form_class(data=self.initial_data)
         if not self.reset_form.is_valid():
-            raise serializers.ValidationError(self.reset_form.errors)
+            raise ValidationError(self.reset_form.errors)
 
         return value
 
@@ -98,15 +82,10 @@ class PasswordResetSerializer(serializers.Serializer):
             "request": request,
         }
 
-        opts.update(self.get_email_options())
         self.reset_form.save(**opts)
 
 
-class PasswordResetConfirmSerializer(serializers.Serializer):
-    """
-    Serializer for confirming a password reset attempt.
-    """
-
+class PasswordResetConfirmSerializer(Serializer):
     new_password1 = serializers.CharField(max_length=128)
     new_password2 = serializers.CharField(max_length=128)
     uid = serializers.CharField()
@@ -118,17 +97,15 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         # Decode the uidb64 to uid to get User object
         try:
             uid = force_str(uid_decoder(attrs["uid"]))
-            self.user = UserModel.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             raise ValidationError({"uid": ["Invalid value"]})
 
-        if not default_token_generator.check_token(self.user, attrs["token"]):
+        if not default_token_generator.check_token(user, attrs["token"]):
             raise ValidationError({"token": ["Invalid value"]})
 
         # Construct SetPasswordForm instance
-        self.set_password_form = self.set_password_form_class(
-            user=self.user, data=attrs
-        )
+        self.set_password_form = self.set_password_form_class(user=user, data=attrs)
         if not self.set_password_form.is_valid():
             raise serializers.ValidationError(self.set_password_form.errors)
 
@@ -138,7 +115,7 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         return self.set_password_form.save()
 
 
-class PasswordChangeSerializer(serializers.Serializer):
+class PasswordChangeSerializer(Serializer):
     old_password = serializers.CharField(max_length=128)
     new_password1 = serializers.CharField(max_length=128)
     new_password2 = serializers.CharField(max_length=128)

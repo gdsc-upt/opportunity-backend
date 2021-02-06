@@ -35,23 +35,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",
     "authentication",
-    "dj_rest_auth.registration",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
 ]
-
-# required by allauth
-SITE_ID = 1
-
-REST_USE_JWT = True
-JWT_AUTH_COOKIE = "jwt-auth"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
@@ -306,11 +294,7 @@ EMAIL_HOST_USER = "testbackendemail001@gmail.com"
 EMAIL_HOST_PASSWORD = "Testemail001#"
 EMAIL_USE_TLS = True
 
-# DJANGO ALL AUTH SETTINGS
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    "authentication.backends.AuthenticationBackend",
 ]

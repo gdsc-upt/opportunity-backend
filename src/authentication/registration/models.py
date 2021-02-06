@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core import signing
-from django.core.mail import EmailMultiAlternatives, EmailMessage
-from django.template import TemplateDoesNotExist
+from django.core.mail import EmailMessage
+from django.core.signing import SignatureExpired, BadSignature
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str
 
@@ -25,11 +25,8 @@ class EmailConfirmationHMAC:
             max_age = 60 * 60 * 24 * EMAIL_CONFIRMATION_EXPIRE_DAYS
             pk = signing.loads(key, max_age=max_age, salt=SALT)
             ret = EmailConfirmationHMAC(User.objects.get(pk=pk))
-        except (
-            signing.SignatureExpired,
-            signing.BadSignature,
-        ):
-            ret = None
+        except (SignatureExpired, BadSignature):
+            return None
         return ret
 
     def confirm(self):
@@ -48,42 +45,27 @@ class EmailConfirmationHMAC:
             "key": self.key,
         }
         if signup:
-            email_template = "account/email/email_confirmation_signup"
+            email_template = "authentication/email/email_confirmation_signup"
         else:
-            email_template = "account/email/email_confirmation"
+            email_template = "authentication/email/email_confirmation"
         msg = self.render_mail(email_template, self.user.email, ctx, request)
         msg.send()
 
-    def render_mail(self, template_prefix, email, context, request):
-        """
-        Renders an e-mail to `email`.  `template_prefix` identifies the
-        e-mail that is to be sent, e.g. "account/email/email_confirmation"
-        """
+    @staticmethod
+    def render_mail(template_prefix, email, context, request):
         to = [email] if isinstance(email, str) else email
-        subject = render_to_string("{0}_subject.txt".format(template_prefix), context)
+        subject = render_to_string(f"{template_prefix}_subject.html", context)
         # remove superfluous line breaks
         subject = " ".join(subject.splitlines()).strip()
         subject = force_str(subject)
         from_email = settings.DEFAULT_FROM_EMAIL
 
-        bodies = {}
-        for ext in ["html", "txt"]:
-            try:
-                template_name = "{0}_message.{1}".format(template_prefix, ext)
-                bodies[ext] = render_to_string(
-                    template_name,
-                    context,
-                    request,
-                ).strip()
-            except TemplateDoesNotExist:
-                if ext == "txt" and not bodies:
-                    # We need at least one body
-                    raise
-        if "txt" in bodies:
-            msg = EmailMultiAlternatives(subject, bodies["txt"], from_email, to)
-            if "html" in bodies:
-                msg.attach_alternative(bodies["html"], "text/html")
-        else:
-            msg = EmailMessage(subject, bodies["html"], from_email, to)
-            msg.content_subtype = "html"  # Main content is now text/html
+        template_name = f"{template_prefix}_message.html"
+        body = render_to_string(
+            template_name,
+            context,
+            request,
+        ).strip()
+        msg = EmailMessage(subject, body, from_email, to)
+        msg.content_subtype = "html"
         return msg

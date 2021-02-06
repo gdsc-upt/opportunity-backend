@@ -33,7 +33,7 @@ class Organisation(SlugableModel, PublishableModel, BaseModel):
 
 class User(AbstractUser):
     email = EmailField(_("email address"), unique=True)
-    is_email_confirmed = BooleanField(_("email confirmed"))
+    is_email_confirmed = BooleanField(_("email confirmed"), default=False)
 
     class Meta:
         db_table = "auth_user"
