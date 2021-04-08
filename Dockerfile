@@ -29,11 +29,15 @@ RUN set -ex \
         gcc \
         build-base \
         musl-dev \
+        libressl-dev \
         # these 2 are for postgres & gis
         python3-dev \
         libffi-dev \
-        postgresql-dev\
-    && pip install poetry \
+        postgresql-dev \
+        curl \
+    && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - \
+    && export PATH="$HOME/.poetry/bin:$PATH" \
+    && pip install --upgrade pip \
     && poetry config virtualenvs.create false \
     && poetry install --no-dev --no-interaction --no-ansi \
     && pip install gunicorn whitenoise \
