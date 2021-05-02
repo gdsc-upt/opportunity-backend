@@ -70,7 +70,7 @@ class WantToHelpViewSet(CreateModelMixin, GenericViewSet):
 @extend_schema_view(
     create=extend_schema(
         description="Saves messages to database and sends email "
-        "both to the one that submitted form and to the team's email",
+                    "both to the one that submitted form and to the team's email",
         summary="Send messages to Opportunity team",
         auth=[],
         responses={

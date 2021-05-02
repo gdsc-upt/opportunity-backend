@@ -1,7 +1,3 @@
-from .serializers import (
-    VerifyEmailSerializer,
-    RegisterSerializer,
-)
 from django.http import Http404
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +8,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from authentication.registration.models import EmailConfirmationHMAC
+from .serializers import (
+    VerifyEmailSerializer,
+    RegisterSerializer,
+)
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters("password1", "password2")

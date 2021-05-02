@@ -11,12 +11,11 @@ from django.db.models import (
     PositiveIntegerField,
     Q,
 )
-from django.utils.translation import gettext_lazy as _
 from django.db.models.constraints import CheckConstraint
+from django.utils.translation import gettext_lazy as _
 
 from administration.models import Category
 from common.models import SlugableModel, PublishableModel, BaseModel
-
 from common.utils import get_upload_path
 from website.constants import MenuTypes, SettingTypes
 

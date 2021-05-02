@@ -10,8 +10,8 @@ from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.settings import api_settings as jwt_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from administration.models import User
@@ -66,10 +66,10 @@ class LoginView(GenericAPIView):
         }
         if return_expiration_times:
             access_token_expiration = (
-                timezone.now() + jwt_settings.ACCESS_TOKEN_LIFETIME
+                    timezone.now() + jwt_settings.ACCESS_TOKEN_LIFETIME
             )
             refresh_token_expiration = (
-                timezone.now() + jwt_settings.REFRESH_TOKEN_LIFETIME
+                    timezone.now() + jwt_settings.REFRESH_TOKEN_LIFETIME
             )
             data["access_token_expiration"] = access_token_expiration
             data["refresh_token_expiration"] = refresh_token_expiration
@@ -113,8 +113,8 @@ class LogoutView(APIView):
             except (TokenError, AttributeError, TypeError) as error:
                 if hasattr(error, "args"):
                     if (
-                        "Token is blacklisted" in error.args
-                        or "Token is invalid or expired" in error.args
+                            "Token is blacklisted" in error.args
+                            or "Token is invalid or expired" in error.args
                     ):
                         response.data = {"detail": _(error.args[0])}
                         response.status_code = status.HTTP_401_UNAUTHORIZED

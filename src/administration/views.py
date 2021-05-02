@@ -1,6 +1,6 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import status
 from rest_framework import permissions
+from rest_framework import status
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet
 

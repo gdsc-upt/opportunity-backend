@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 
 from corsheaders.defaults import default_methods, default_headers
-
 from django.contrib.admin import AdminSite
 
 from main.settings import Config
@@ -99,7 +98,7 @@ AUTH_USER_MODEL = "administration.User"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth"
-        ".password_validation.UserAttributeSimilarityValidator",
+                ".password_validation.UserAttributeSimilarityValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",

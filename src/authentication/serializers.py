@@ -5,10 +5,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode as uid_decoder
 from django.utils.translation import gettext_lazy as _
-
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import empty
 from rest_framework.serializers import Serializer, ModelSerializer
 
 from administration.models import User
