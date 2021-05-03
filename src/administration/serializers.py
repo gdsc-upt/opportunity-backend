@@ -1,13 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
 from administration.models import Organisation, Category, UserProfile, Opportunity
-
-
-class OpportunitySerializer(ModelSerializer):
-    class Meta:
-        model = Opportunity
-        exclude = ("modified",)
-        depth = 1
+from common.constants import CREATED, MODIFIED, NAME, SLUG, ID
 
 
 class OrganizationSerializer(ModelSerializer):
@@ -16,10 +10,24 @@ class OrganizationSerializer(ModelSerializer):
         fields = "__all__"
 
 
+class OrganizationLightSerializer(ModelSerializer):
+    class Meta:
+        model = Organisation
+        fields = NAME, SLUG
+
+
+class OpportunitySerializer(ModelSerializer):
+    organisation = OrganizationLightSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Opportunity
+        exclude = (MODIFIED, ID)
+
+
 class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
-        exclude = ("created", "modified")
+        exclude = (CREATED, MODIFIED)
         depth = 1
 
 

@@ -61,16 +61,17 @@ class UserProfile(BaseModel):
 
 
 class Opportunity(PublishableModel, SlugableModel, BaseModel):
-    name = CharField(_("name"), max_length=50)
-    url = URLField(_("url"), blank=True, default=None)
-    description = TextField(_("description"), max_length=300)
+    name = CharField(_("name"), max_length=300)
+    url = URLField(_("url"), blank=True, default='')
+    description = TextField(_("description"), max_length=2000)
     deadline = DateTimeField(_("deadline"))
+    location = CharField(_('location'), max_length=300, default='')
+    schedule = TextField(_('schedule'), max_length=1000, blank=True, default='')
+    roles = CharField(_('roles'), max_length=500, default='')
     organisation = ForeignKey(
         Organisation,
         verbose_name=_("organisation"),
         on_delete=CASCADE,
-        blank=True,
-        null=True,
         related_name="opportunities",
         related_query_name="opportunity",
     )

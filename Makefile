@@ -1,24 +1,26 @@
 BASE_DIR := src
 ENV_PATH := $(shell poetry env info --path)
+RUN := poetry run
+MANAGE_PY := $(RUN) python $(BASE_DIR)/manage.py
 ACTIVATE_PATH := /bin/activate
 WIN_ACTIVATE_PATH := \Scripts\activate.bat
 
 run:
-	python $(BASE_DIR)/manage.py runserver
+	$(MANAGE_PY) runserver
 
 migrations:
-	python $(BASE_DIR)/manage.py makemigrations
+	$(MANAGE_PY) makemigrations
 
 migrate:
-	python $(BASE_DIR)/manage.py migrate
+	$(MANAGE_PY) migrate
 
 lint:
-	black $(BASE_DIR)
-	pylint $(BASE_DIR)
-	pycodestyle --exclude=migrations --max-line-length=88 $(BASE_DIR)
+	$(RUN) black $(BASE_DIR)
+	$(RUN) pylint $(BASE_DIR)
+	$(RUN) pycodestyle --exclude=migrations --max-line-length=88 $(BASE_DIR)
 
 superuser:
-	python $(BASE_DIR)/manage.py shell -c "import createsuperuser"
+	$(MANAGE_PY) shell -c "import createsuperuser"
 
 build:
 	docker-compose up --build
@@ -38,7 +40,7 @@ setup: config.yml
 	poetry install
 
 	echo "Checking config.yml exists and has basic setup..."
-	python $(BASE_DIR)/manage.py shell -c "import check_config_vars"
+	$(MANAGE_PY) shell -c "import check_config_vars"
 
 	echo "Setting up database..."
 	make migrate

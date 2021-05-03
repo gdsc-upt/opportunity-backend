@@ -7,6 +7,8 @@ from django.utils.translation import gettext_lazy as _
 
 from administration.models import User, Organisation, Opportunity, Category, UserProfile
 from common.admin import BaseModelAdmin, SlugableModelAdmin, CREATED_MODIFIED
+from common.constants import NAME, LOCATION, SCHEDULE, CREATED, MODIFIED, SLUG, \
+    DESCRIPTION, ORGANISATION, ROLES, USER, URL, OPPORTUNITIES
 
 
 @register(User)
@@ -36,15 +38,15 @@ class UserAdmin(BaseUserAdmin):
 
 @register(UserProfile)
 class UserProfileAdmin(ModelAdmin):
-    list_display = ("user", "organisation", "description")
-    list_filter = ("organisation",)
-    search_fields = ("user", "organization")
-    autocomplete_fields = ("user", "organisation")
+    list_display = (USER, ORGANISATION, DESCRIPTION)
+    list_filter = (ORGANISATION,)
+    search_fields = (USER, ORGANISATION)
+    autocomplete_fields = (USER, ORGANISATION)
 
 
 @register(Organisation)
 class OrganisationAdmin(BaseModelAdmin, SlugableModelAdmin):
-    search_fields = ("name",)
+    search_fields = (NAME,)
 
 
 @register(Opportunity)
@@ -54,11 +56,14 @@ class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
             None,
             {
                 "fields": (
-                    "name",
-                    "slug",
-                    "url",
-                    "organisation",
-                    "description",
+                    NAME,
+                    SLUG,
+                    URL,
+                    ORGANISATION,
+                    DESCRIPTION,
+                    LOCATION,
+                    SCHEDULE,
+                    ROLES,
                     "deadline",
                     "is_published",
                 )
@@ -67,18 +72,18 @@ class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
         CREATED_MODIFIED,
     )
     list_display = (
-        "name",
+        NAME,
         "show_org_url",
         "deadline",
         "show_opp_url",
         "description",
         "is_published",
     )
-    list_filter = ("deadline", "organisation")
+    list_filter = ("deadline", ORGANISATION)
     list_editable = ("is_published",)
-    list_select_related = ("organisation",)
-    autocomplete_fields = ("organisation",)
-    search_fields = ("name",)
+    list_select_related = (ORGANISATION,)
+    autocomplete_fields = (ORGANISATION,)
+    search_fields = (NAME,)
 
     @staticmethod
     def show_opp_url(obj: Opportunity):
@@ -98,10 +103,10 @@ class OpportunityAdmin(BaseModelAdmin, SlugableModelAdmin):
 @register(Category)
 class CategoryAdmin(BaseModelAdmin, SlugableModelAdmin):
     fieldsets = (
-        (None, {"fields": ("name", "slug", "opportunities")}),
+        (None, {"fields": (NAME, SLUG, OPPORTUNITIES)}),
         CREATED_MODIFIED,
     )
-    filter_horizontal = ("opportunities",)
-    list_display = ("name", "slug", "created", "modified")
-    list_filter = ("created", "modified")
-    search_fields = ("name",)
+    filter_horizontal = (OPPORTUNITIES,)
+    list_display = (NAME, SLUG, CREATED, MODIFIED)
+    list_filter = (CREATED, MODIFIED)
+    search_fields = (NAME,)
